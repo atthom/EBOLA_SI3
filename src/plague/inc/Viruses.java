@@ -4,8 +4,8 @@ package plague.inc;
 /**
  * 
  * @author Adrien Prestini
- * Enum qui présente tous les virus possibles présents sur la carte 
- * Un coefficient de mortalité et un coefficient de contagion
+ * Enum qui prÃ©sente tous les virus possibles prÃ©sents sur la carte 
+ * Un coefficient de mortalitÃ© et un coefficient de contagion
  *
  */
 public enum Viruses {

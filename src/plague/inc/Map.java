@@ -100,10 +100,10 @@ public class Map {
     }
 
     public void move() {
-        for(Coordinates c : coords) {
-            map.get(c).move(this);
-            // this is fucked up, i know... :(
-        }
+//        for(Coordinates c : coords) {
+//            map.get(c).move(this);
+//            // this is fucked up, i know... :(
+//        }
         
         
 //        ArrayList<Coordinates> coordsbis = new ArrayList<>(coords.size());
