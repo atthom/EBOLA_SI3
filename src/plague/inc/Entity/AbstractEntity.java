@@ -16,13 +16,15 @@ import plague.inc.Viruses;
  * @author user
  */
 public abstract class AbstractEntity {
-    private State state;
-    private Viruses virus;
-    private Coordinates coord;
-    private int StatusTime = 0 ;
+    protected State state;
+    protected Viruses virus;
+    protected Coordinates coord;
+    protected int StatusTime = 0 ;
     
     public AbstractEntity() {
-        state = State.Healty;
+        state = State.HEALTHY;
+        virus = null;
+        coord = new Coordinates(0, 0);
     }
 
     public State getS() {
