@@ -9,41 +9,46 @@ import plague.inc.Coordinates;
 import plague.inc.Mapppp;
 import plague.inc.State;
 import plague.inc.Tile;
+import plague.inc.Viruses;
 
 /**
  *
  * @author user
  */
 public abstract class AbstractEntity {
-    private State s;
-    private Coordinates t;
+    private State state;
+    private Viruses virus;
+    private Coordinates coord;
+    private int StatusTime = 0 ;
     
     public AbstractEntity() {
-        s = State.Healty;
+        state = State.Healty;
     }
 
     public State getS() {
-        return s;
+        return state;
     }
     public void setS(State s) {
-        this.s = s;
+        this.state = s;
     }
-    
-    
-    public void move(Mapppp map) {
+      
+    protected Viruses getVirus() {
+		return virus;
+	}
+
+	protected Coordinates getT() {
+		return coord;
+	}
+
+	protected int getStatusTime() {
+		return StatusTime;
+	}
+
+	public void move(Mapppp map) {
         int rand = (int) (Math.random() * 4);        
     }
        
     public abstract void Contact(AbstractEntity abs);
-//    public void move(Tile t) {
-//        int rand =  (int) (Math.random() * 4);
-//    }
-//    
-//    private void swap(Tile t1, Tile t2) {
-//        Tile tc = t1;
-//        t1 = t2;
-//        t2 = tc;
-//    }
 
     @Override
     public boolean equals(Object obj) {
@@ -57,7 +62,24 @@ public abstract class AbstractEntity {
             return false;
         }
         final AbstractEntity other = (AbstractEntity) obj;
-        return this.s == other.s;
+        return this.state == other.state;
     }
+    
+    /**
+	 * Un individu sain devient malade
+	 */
+	protected abstract void becomeSick(Viruses v);
+	
+	/**
+	 * Un invidu devient contagieux
+	 */
+	protected abstract void becomeContagious();
+	
+	/**
+	 * Un individu meurt
+	 */
+	protected abstract void die();
+	
+    
     
 }
