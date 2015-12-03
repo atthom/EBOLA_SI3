@@ -5,45 +5,46 @@
  */
 package plague.inc.Entity;
 
+import java.util.Objects;
 import plague.inc.Coordinates;
-import plague.inc.Mapppp;
+import plague.inc.Map;
 import plague.inc.State;
-import plague.inc.Tile;
 
 /**
  *
  * @author user
  */
 public abstract class AbstractEntity {
+
     private State s;
-    private Coordinates t;
-    
+    private Coordinates coord;
+
     public AbstractEntity() {
         s = State.Healty;
+        coord = null;
+    }
+
+    public void setCoord(Coordinates c) {
+        this.coord = c;
+    }
+
+    public Coordinates getCoord() {
+        return coord;
     }
 
     public State getS() {
         return s;
     }
+
     public void setS(State s) {
         this.s = s;
     }
-    
-    
-    public void move(Mapppp map) {
-        int rand = (int) (Math.random() * 4);        
+
+    public void move(Map map) {
+        coord = map.move(coord, coord.randomize());
     }
-       
+
     public abstract void Contact(AbstractEntity abs);
-//    public void move(Tile t) {
-//        int rand =  (int) (Math.random() * 4);
-//    }
-//    
-//    private void swap(Tile t1, Tile t2) {
-//        Tile tc = t1;
-//        t1 = t2;
-//        t2 = tc;
-//    }
 
     @Override
     public boolean equals(Object obj) {
@@ -57,7 +58,13 @@ public abstract class AbstractEntity {
             return false;
         }
         final AbstractEntity other = (AbstractEntity) obj;
-        return this.s == other.s;
+        if (this.s != other.s) {
+            return false;
+        }
+        if (!Objects.equals(this.coord, other.coord)) {
+            return false;
+        }
+        return true;
     }
-    
+
 }

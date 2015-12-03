@@ -51,6 +51,12 @@ public class Coordinates {
     public int distance() {
         return Math.abs(this.x) + Math.abs(this.y);
     }
+    
+    public Coordinates randomize() {
+        return new Coordinates(
+                (int) ((Math.random() * 3) - 1 + this.x),
+                (int) ((Math.random() * 3) - 1 + this.y));
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -69,7 +75,14 @@ public class Coordinates {
         }
         return this.y == other.y;
     }
-    
-    
+
+    private void setX(int x) {
+        this.x = x;
+    }
+
+    private void setY(int y) {
+        this.y = y;
+    }
+      
     
 }
