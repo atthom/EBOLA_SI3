@@ -5,6 +5,8 @@
  */
 package plague.inc.Entity;
 
+import plague.inc.Viruses;
+
 /**
  *
  * @author user
@@ -18,5 +20,23 @@ public class Pig extends AbstractEntity {
     public void Contact(AbstractEntity abs) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+	@Override
+	protected void becomeSick(Viruses v) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void becomeContagious() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void die() {
+		// TODO Auto-generated method stub
+		
+	}
     
 }

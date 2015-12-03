@@ -1,9 +1,8 @@
-<Merge Conflict>
-build/classes/plague/inc/*
-build/test/classes/plague/inc/*
-build/test/results/*
-nbproject/*
+bin/
+.classpath
+.project
 build/*
-build.xml
+nbproject/*
 dist/*
+build.xml
 manifest.mf

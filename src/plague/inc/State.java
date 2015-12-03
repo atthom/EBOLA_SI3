@@ -10,9 +10,9 @@ package plague.inc;
  * @author user
  */
 public enum State {
-    Healty,
-    Sick,
-    Contagious,
-    Recovery,
+    HEALTHY,
+    SICK,
+    CONTAGIOUS,
+    RECOVERY,
     HE_S_DEAD_MOTHAFUCKA;
 }
