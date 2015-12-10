@@ -5,7 +5,7 @@
  */
 package plague.inc.Entity;
 
-import plague.inc.Viruses;
+import plague.inc.virus.Viruses;
 
 /**
  *

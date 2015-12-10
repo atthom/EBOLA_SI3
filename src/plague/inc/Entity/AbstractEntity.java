@@ -6,10 +6,9 @@
 package plague.inc.Entity;
 
 import java.util.Objects;
-import plague.inc.Coordinates;
-import plague.inc.Map;
-import plague.inc.State;
-import plague.inc.Viruses;
+import plague.inc.map.Coordinates;
+import plague.inc.map.Map;
+import plague.inc.virus.Viruses;
 
 /**
  *
@@ -39,17 +38,17 @@ public abstract class AbstractEntity {
     protected Viruses getVirus() {
         return virus;
     }
+    
+    public Coordinates getCoord() {
+        return coord;
+    }
 
     public void setCoord(Coordinates c) {
         this.coord = c;
     }
 
-    public void move(Map map) {
-        coord = map.move(coord, coord.randomize());
-    }
-
-    protected Coordinates getCoord() {
-        return coord;
+    public Coordinates move() {
+        return coord.randomize();
     }
 
     protected int getStatusTime() {
