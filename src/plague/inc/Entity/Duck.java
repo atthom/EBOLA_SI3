@@ -5,7 +5,7 @@
  */
 package plague.inc.Entity;
 
-import FluGraph.Field;
+import FluGraph.core.Field;
 import java.util.List;
 import plague.inc.map.Coordinates;
 

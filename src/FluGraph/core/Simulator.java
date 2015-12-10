@@ -1,5 +1,10 @@
-package FluGraph;
+package FluGraph.core;
 
+import FluGraph.ui.SimulatorView;
+import FluGraph.ui.GraphView;
+import FluGraph.ui.GridView;
+import FluGraph.Animal.Rabbit;
+import FluGraph.Animal.Fox;
 import java.util.Random;
 
 
@@ -165,7 +170,7 @@ public class Simulator {
                     Fox fox = new Fox(true, field, location);
                     entities.add(fox);
                 } else if (rand.nextDouble() <= RABBIT_CREATION_PROBABILITY) {
-                    Location location = new Location(row, col);
+                    Coordinates location = new Coordinates(row, col);
                     Rabbit rabbit = new Rabbit(true, field, location);
                     entities.add(rabbit);
                 }

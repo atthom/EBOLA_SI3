@@ -5,15 +5,10 @@
  */
 package plague.inc.map;
 
-import Exceptions.PlagueException;
 import Exceptions.PlagueRuntimeException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
 import plague.inc.Entity.AbstractEntity;
 
 /**
@@ -90,33 +85,8 @@ public class Map {
         throw new PlagueRuntimeException("Il y a déja quelqu'un ici !");
     }
 
-    private void move(AbstractEntity entity) {
-
-//            for (Coordinates cc : coords) {
-//                if (cc.equals(togo)) {
-//                    entity.setCoord(current);
-//                    break;
-//                }
-//
-//                if (cc.equals(current)) {
-//                    map.remove(cc);
-//                    put(togo, entity);   
-//                }
-//            }
-    }
-
     private boolean can_move(Coordinates togo) {
-        if (!is_OutOfBound(togo)) {
-            for (Coordinates c : coords) {
-                if (c.equals(togo)) {
-                    return false;
-                }
-            }
-            return true;
-        } else {
-            return false;
-        }
-
+        return (!is_OutOfBound(togo)) ? coords.stream().noneMatch((c) -> (c.equals(togo))) : false;
     }
 
     public void move() {
@@ -153,30 +123,4 @@ public class Map {
         }
         System.out.println(s);
     }
-
-//        for(Coordinates c : coords) {
-//            map.get(c).move(this);
-//            // this is fucked up, i know... :(
-//        }
-//        ArrayList<Coordinates> coordsbis = new ArrayList<>(coords.size());
-//        int i = 0;
-//        while (coords.size() > 1) {
-//            int randx = (int) (Math.random() * 2) - 1 + coords.get(i).getX();
-//            int randy = (int) (Math.random() * 2) - 1 + coords.get(i).getY();
-//
-//            Coordinates c = new Coordinates(randx, randy);
-//            while ((randx > 0 && randx < yaxis) && (randy > 0 && randy < xaxis) && coords.contains(c) && coordsbis.contains(c)) {
-//                randx = (int) (Math.random() * 2) - 1 + coords.get(i).getX();
-//                randy = (int) (Math.random() * 2) - 1 + coords.get(i).getY();
-//                c = new Coordinates(randx, randy);
-//            }
-//
-//            coordsbis.add(c);
-//            map.put(c, map.get(coords.get(i)));
-//            map.remove(coords.get(i));
-//            coords.remove(i);
-//            i++;
-//        }
-//
-//        coords.addAll(coordsbis);
 }

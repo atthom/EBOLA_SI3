@@ -1,7 +1,12 @@
-package FluGraph;
+package FluGraph.Animal;
 
+import FluGraph.core.Field;
+import FluGraph.core.Randomizer;
 import java.util.List;
 import java.util.Random;
+import plague.inc.Entity.AbstractEntity;
+import plague.inc.map.Coordinates;
+import plague.inc.virus.Viruses;
 
 /**
  * A simple model of a rabbit.
@@ -38,7 +43,7 @@ public class Rabbit extends Animal
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
-    public Rabbit(boolean randomAge, Field field, Location location)
+    public Rabbit(boolean randomAge, Field field, Coordinates location)
     {
         super(field, location);
         age = 0;
@@ -52,13 +57,13 @@ public class Rabbit extends Animal
      * around. Sometimes it will breed or die of old age.
      * @param newRabbits A list to return newly born rabbits.
      */
-    public void act(List<Animal> newRabbits)
+    public void act(List<AbstractEntity> newRabbits)
     {
         incrementAge();
         if(isAlive()) {
             giveBirth(newRabbits);            
             // Try to move into a free location.
-            Location newLocation = getField().freeAdjacentLocation(getLocation());
+            Coordinates newLocation = getField().freeAdjacentCoordinates(getLocation());
             if(newLocation != null) {
                 setLocation(newLocation);
             }
@@ -86,15 +91,15 @@ public class Rabbit extends Animal
      * New births will be made into free adjacent locations.
      * @param newRabbits A list to return newly born rabbits.
      */
-    private void giveBirth(List<Animal> newRabbits)
+    private void giveBirth(List<AbstractEntity> newRabbits)
     {
         // New rabbits are born into adjacent locations.
         // Get a list of adjacent free locations.
         Field field = getField();
-        List<Location> free = field.getFreeAdjacentLocations(getLocation());
+        List<Coordinates> free = field.getFreeAdjacentCoordinates(getLocation());
         int births = breed();
         for(int b = 0; b < births && free.size() > 0; b++) {
-            Location loc = free.remove(0);
+            Coordinates loc = free.remove(0);
             Rabbit young = new Rabbit(false, field, loc);
             newRabbits.add(young);
         }
@@ -121,5 +126,30 @@ public class Rabbit extends Animal
     private boolean canBreed()
     {
         return age >= BREEDING_AGE;
+    }
+
+    @Override
+    public void contact(AbstractEntity abs) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected void becomeSick(Viruses v) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected void becomeContagious() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected void incrementStatusTime() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected void StateChange() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

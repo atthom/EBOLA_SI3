@@ -6,7 +6,7 @@
 package plague.inc.Entity;
 
 import java.util.List;
-import FluGraph.Field;
+import FluGraph.core.Field;
 import java.util.Objects;
 import plague.inc.map.Coordinates;
 import plague.inc.virus.Viruses;

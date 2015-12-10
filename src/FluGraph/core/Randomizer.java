@@ -1,4 +1,4 @@
-package FluGraph;
+package FluGraph.core;
 
 import java.util.Random;
 

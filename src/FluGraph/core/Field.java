@@ -1,4 +1,4 @@
-package FluGraph;
+package FluGraph.core;
 
 import java.util.Collections;
 import java.util.LinkedList;

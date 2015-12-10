@@ -9,7 +9,7 @@ import java.io.IOError;
 import java.util.List;
 import java.util.Random;
 
-import FluGraph.Field;
+import FluGraph.core.Field;
 import plague.inc.map.Coordinates;
 import plague.inc.virus.Viruses;
 

@@ -1,6 +1,9 @@
-package FluGraph;
+package FluGraph.Animal;
 
+import FluGraph.core.Field;
 import java.util.List;
+import plague.inc.Entity.AbstractEntity;
+import plague.inc.map.Coordinates;
 
 /**
  * A class representing shared characteristics of animals.
@@ -8,14 +11,14 @@ import java.util.List;
  * @author David J. Barnes and Michael Kölling
  * @version 2011.07.31
  */
-public abstract class Animal
+public abstract class Animal extends AbstractEntity
 {
     // Whether the animal is alive or not.
     private boolean alive;
     // The animal's field.
     private Field field;
     // The animal's position in the field.
-    private Location location;
+    private Coordinates location;
     
     /**
      * Create a new animal at location in field.
@@ -23,8 +26,9 @@ public abstract class Animal
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
-    public Animal(Field field, Location location)
+    public Animal(Field field, Coordinates location)
     {
+        super();
         alive = true;
         this.field = field;
         setLocation(location);
@@ -35,13 +39,14 @@ public abstract class Animal
      * whatever it wants/needs to do.
      * @param newAnimals A list to receive newly born animals.
      */
-    abstract public void act(List<Animal> newAnimals);
+    abstract public void act(List<AbstractEntity> newAnimals);
 
     /**
      * Check whether the animal is alive or not.
      * @return true if the animal is still alive.
      */
-    protected boolean isAlive()
+    @Override
+    public boolean isAlive()
     {
         return alive;
     }
@@ -64,7 +69,7 @@ public abstract class Animal
      * Return the animal's location.
      * @return The animal's location.
      */
-    protected Location getLocation()
+    protected Coordinates getLocation()
     {
         return location;
     }
@@ -73,7 +78,7 @@ public abstract class Animal
      * Place the animal at the new location in the given field.
      * @param newLocation The animal's new location.
      */
-    protected void setLocation(Location newLocation)
+    protected void setLocation(Coordinates newLocation)
     {
         if(location != null) {
             field.clear(location);
