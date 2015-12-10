@@ -1,7 +1,7 @@
 package plague.inc.Entity;
 
 import FluGraph.Field;
-import plague.inc.Coordinates;
+import plague.inc.map.Coordinates;
 
 public abstract class Animals extends AbstractEntity {
 	

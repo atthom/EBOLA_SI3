@@ -5,8 +5,10 @@
  */
 package plague.inc.Entity;
 
+import FluGraph.Field;
 import java.util.List;
-
+import plague.inc.map.Coordinates;
+import plague.inc.virus.Viruses;
 
 /**
  *
@@ -14,42 +16,53 @@ import java.util.List;
  */
 public class Pig extends Animals {
 
-    public Pig() {
+    public Pig(Field field, Coordinates coord) {
+        super(field, coord);
     }
 
     @Override
-    public void Contact(AbstractEntity abs) {
+    protected void becomeSick(Viruses v) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    protected void becomeContagious() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    protected void die() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public boolean isAlive() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void act(List<AbstractEntity> newEntities) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void contact(AbstractEntity abs) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-	@Override
-	protected void becomeSick(Viruses v) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    protected void incrementStatusTime() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
-	@Override
-	protected void becomeContagious() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    protected void StateChange() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
-	@Override
-	protected void die() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean isAlive() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void act(List<AbstractEntity> newEntities) {
-		// TODO Auto-generated method stub
-		
-	}
-    
 }

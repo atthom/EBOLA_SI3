@@ -2,13 +2,14 @@ package FluGraph;
 
 import java.util.Random;
 
-import plague.inc.Coordinates;
+
 import plague.inc.Entity.*;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.awt.Color;
+import plague.inc.map.Coordinates;
 
 /**
  * A simple predator-prey simulator, based on a rectangular field containing
