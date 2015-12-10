@@ -5,6 +5,7 @@
  */
 package plague.inc;
 
+import plague.inc.map.Tile;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
