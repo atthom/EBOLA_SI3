@@ -5,13 +5,15 @@
  */
 package plague.inc.Entity;
 
-import plague.inc.virus.Viruses;
+import java.util.List;
+
+import plague.inc.Viruses;
 
 /**
  *
  * @author user
  */
-public class Duck  extends AbstractEntity {
+public class Duck  extends Animals {
 
     public Duck() {
     }
@@ -43,6 +45,22 @@ public class Duck  extends AbstractEntity {
 
 	@Override
 	protected void die() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public boolean isAlive() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public void act(List<AbstractEntity> newEntities) {
 		// TODO Auto-generated method stub
 		
 	}

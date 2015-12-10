@@ -6,7 +6,7 @@
 package plague.inc.map;
 
 /**
- * Classe coordonÃ©e 2D
+ * Classe coordonnée 2D
  * @author user
  */
 public class Coordinates {
