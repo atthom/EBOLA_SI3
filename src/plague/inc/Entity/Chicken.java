@@ -11,9 +11,12 @@ import plague.inc.Viruses;
  *
  * @author user
  */
-public class Chicken extends AbstractEntity {
+public class Chicken extends Animals {
 
-    public Chicken() {
+	
+    public Chicken(){
+    	super();
+    	
     }
 
     

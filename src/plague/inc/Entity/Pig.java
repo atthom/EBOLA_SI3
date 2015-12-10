@@ -11,7 +11,7 @@ import plague.inc.Viruses;
  *
  * @author user
  */
-public class Pig extends AbstractEntity {
+public class Pig extends Animals {
 
     public Pig() {
     }
