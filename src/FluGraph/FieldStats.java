@@ -1,6 +1,8 @@
-package foxesandrabbits.graph;
+package FluGraph;
 
 import java.util.HashMap;
+
+import plague.inc.Entity.AbstractEntity;
 
 /**
  * This class collects and provides some statistical data on the state of a
@@ -128,9 +130,9 @@ public class FieldStats {
         reset();
         for (int row = 0; row < field.getDepth(); row++) {
             for (int col = 0; col < field.getWidth(); col++) {
-                Object animal = field.getObjectAt(row, col);
-                if (animal != null) {
-                    incrementCount(animal.getClass());
+                AbstractEntity entity = field.getAbstractEntitytAt(row, col);
+                if (entity != null) {
+                    incrementCount(entity.getClass());
                 }
             }
         }

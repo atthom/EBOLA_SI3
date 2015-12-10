@@ -1,4 +1,4 @@
-package foxesandrabbits.graph;
+package FluGraph;
 
 import java.util.Random;
 

@@ -5,6 +5,8 @@
  */
 package plague.inc.Entity;
 
+import java.util.List;
+
 import plague.inc.Viruses;
 
 /**
@@ -35,6 +37,18 @@ public class Pig extends Animals {
 
 	@Override
 	protected void die() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean isAlive() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void act(List<AbstractEntity> newEntities) {
 		// TODO Auto-generated method stub
 		
 	}

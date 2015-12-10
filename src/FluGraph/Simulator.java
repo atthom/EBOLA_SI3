@@ -1,6 +1,10 @@
-package foxesandrabbits.graph;
+package FluGraph;
 
 import java.util.Random;
+
+import plague.inc.Coordinates;
+import plague.inc.Entity.*;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -24,8 +28,8 @@ public class Simulator {
     // The probability that a rabbit will be created in any given grid position.
     private static final double RABBIT_CREATION_PROBABILITY = 0.08;
 
-    // List of animals in the field.
-    private List<Animal> animals;
+    // List of entities in the field.
+    private List<AbstractEntity> entities;
     // The current state of the field.
     private Field field;
     // The current step of the simulation.
@@ -56,19 +60,23 @@ public class Simulator {
             width = DEFAULT_WIDTH;
         }
 
-        animals = new ArrayList<>();
+        entities = new ArrayList<>();
         field = new Field(depth, width);
 
         views = new ArrayList<>();
 
         SimulatorView view = new GridView(depth, width);
-        view.setColor(Rabbit.class, Color.ORANGE);
-        view.setColor(Fox.class, Color.BLUE);
+        //bleu clair --> Homme
+        view.setColor(Person.class, new Color(36, 191, 200));
+        //Orange clair --> Poulet
+        view.setColor(Chicken.class,new Color(255,128,0) );
         views.add(view);
 
         view = new GraphView(500, 150, 500);
-        view.setColor(Rabbit.class, Color.BLACK);
-        view.setColor(Fox.class, Color.RED);
+        //rose clair --> Cochon
+        view.setColor(Pig.class,Color.ORANGE);
+        //jaune clair --> Canard
+        view.setColor(Duck.class, Color.YELLOW);
         views.add(view);
 
         // Setup a valid starting point.
@@ -103,19 +111,19 @@ public class Simulator {
     public void simulateOneStep() {
         step++;
 
-        // Provide space for newborn animals.
-        List<Animal> newAnimals = new ArrayList<>();
+        // Provide space for newborn entities.
+        List<AbstractEntity> newentities = new ArrayList<>();
         // Let all rabbits act.
-        for (Iterator<Animal> it = animals.iterator(); it.hasNext();) {
-            Animal animal = it.next();
-            animal.act(newAnimals);
-            if (!animal.isAlive()) {
+        for (Iterator<AbstractEntity> it = entities.iterator(); it.hasNext();) {
+            AbstractEntity entity = it.next();
+            entity.act(newentities);
+            if (!entity.isAlive()) {
                 it.remove();
             }
         }
 
         // Add the newly born foxes and rabbits to the main lists.
-        animals.addAll(newAnimals);
+        entities.addAll(newentities);
 
         updateViews();
     }
@@ -125,7 +133,7 @@ public class Simulator {
      */
     public void reset() {
         step = 0;
-        animals.clear();
+        entities.clear();
         for (SimulatorView view : views) {
             view.reset();
         }
@@ -152,13 +160,13 @@ public class Simulator {
         for (int row = 0; row < field.getDepth(); row++) {
             for (int col = 0; col < field.getWidth(); col++) {
                 if (rand.nextDouble() <= FOX_CREATION_PROBABILITY) {
-                    Location location = new Location(row, col);
+                    Coordinates location = new Coordinates(row, col);
                     Fox fox = new Fox(true, field, location);
-                    animals.add(fox);
+                    entities.add(fox);
                 } else if (rand.nextDouble() <= RABBIT_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
                     Rabbit rabbit = new Rabbit(true, field, location);
-                    animals.add(rabbit);
+                    entities.add(rabbit);
                 }
                 // else leave the location empty.
             }

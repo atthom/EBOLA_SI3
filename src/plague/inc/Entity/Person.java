@@ -5,6 +5,8 @@
  */
 package plague.inc.Entity;
 
+import java.util.List;
+
 import plague.inc.State;
 import plague.inc.Viruses;
 
@@ -62,6 +64,22 @@ public class Person extends AbstractEntity {
 			this.state = State.HE_S_DEAD_MOTHAFUCKA;
 		}else
 			throw new IllegalArgumentException();
+	}
+
+
+
+	@Override
+	public boolean isAlive() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public void act(List<AbstractEntity> newEntities) {
+		// TODO Auto-generated method stub
+		
 	}
     
 }

@@ -1,16 +1,21 @@
-package foxesandrabbits.graph;
+package FluGraph;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import plague.inc.Coordinates;
+import plague.inc.Entity.AbstractEntity;
+
 /**
  * Represent a rectangular grid of field positions. Each position is able to
- * store a single animal.
+ * store a single entity.
  * 
  * @author David J. Barnes and Michael Kölling
+ * @override Adrien Prestini
  * @version 2011.07.31
+ * @VersionNew 2015.12.10
  */
 public class Field {
     // A random number generator for providing random locations.
@@ -18,8 +23,8 @@ public class Field {
 
     // The depth and width of the field.
     private int depth, width;
-    // Storage for the animals.
-    private Object[][] field;
+    // Storage for the entitys.
+    private AbstractEntity[][] field;
 
     /**
      * Represent a field of the given dimensions.
@@ -32,7 +37,7 @@ public class Field {
     public Field(int depth, int width) {
         this.depth = depth;
         this.width = width;
-        field = new Object[depth][width];
+        field = new AbstractEntity[depth][width];
     }
 
     /**
@@ -52,59 +57,59 @@ public class Field {
      * @param location
      *            The location to clear.
      */
-    public void clear(Location location) {
-        field[location.getRow()][location.getCol()] = null;
+    public void clear(Coordinates cord) {
+        field[cord.getX()][cord.getY()] = null;
     }
 
     /**
-     * Place an animal at the given location. If there is already an animal at
+     * Place an entity at the given location. If there is already an entity at
      * the location it will be lost.
      * 
-     * @param animal
-     *            The animal to be placed.
+     * @param entity
+     *            The entity to be placed.
      * @param row
      *            Row coordinate of the location.
      * @param col
      *            Column coordinate of the location.
      */
-    public void place(Object animal, int row, int col) {
-        place(animal, new Location(row, col));
+    public void place(AbstractEntity entity, int row, int col) {
+        place(entity, new Coordinates(row, col));
     }
 
     /**
-     * Place an animal at the given location. If there is already an animal at
+     * Place an entity at the given location. If there is already an entity at
      * the location it will be lost.
      * 
-     * @param animal
-     *            The animal to be placed.
+     * @param entity
+     *            The entity to be placed.
      * @param location
-     *            Where to place the animal.
+     *            Where to place the entity.
      */
-    public void place(Object animal, Location location) {
-        field[location.getRow()][location.getCol()] = animal;
+    public void place(AbstractEntity entity, Coordinates location) {
+        field[location.getX()][location.getY()] = entity;
     }
 
     /**
-     * Return the animal at the given location, if any.
+     * Return the entity at the given location, if any.
      * 
      * @param location
      *            Where in the field.
-     * @return The animal at the given location, or null if there is none.
+     * @return The entity at the given location, or null if there is none.
      */
-    public Object getObjectAt(Location location) {
-        return getObjectAt(location.getRow(), location.getCol());
+    public AbstractEntity getAbstractEntitytAt(Coordinates location) {
+        return getAbstractEntitytAt(location.getX(), location.getY());
     }
 
     /**
-     * Return the animal at the given location, if any.
+     * Return the entity at the given location, if any.
      * 
      * @param row
      *            The desired row.
      * @param col
      *            The desired column.
-     * @return The animal at the given location, or null if there is none.
+     * @return The entity at the given location, or null if there is none.
      */
-    public Object getObjectAt(int row, int col) {
+    public AbstractEntity getAbstractEntitytAt(int row, int col) {
         return field[row][col];
     }
 
@@ -117,23 +122,23 @@ public class Field {
      *            The location from which to generate an adjacency.
      * @return A valid location within the grid area.
      */
-    public Location randomAdjacentLocation(Location location) {
-        List<Location> adjacent = adjacentLocations(location);
+    public Coordinates randomAdjacentCoordinates(Coordinates location) {
+        List<Coordinates> adjacent = adjacentCoordinates(location);
         return adjacent.get(0);
     }
 
     /**
-     * Get a shuffled list of the free adjacent locations.
+     * Get a shuffled list of the free adjacent coordinates.
      * 
      * @param location
      *            Get locations adjacent to this.
-     * @return A list of free adjacent locations.
+     * @return A list of free adjacent coordinates.
      */
-    public List<Location> getFreeAdjacentLocations(Location location) {
-        List<Location> free = new LinkedList<>();
-        List<Location> adjacent = adjacentLocations(location);
-        for (Location next : adjacent) {
-            if (getObjectAt(next) == null) {
+    public List<Coordinates> getFreeAdjacentCoordinates(Coordinates location) {
+        List<Coordinates> free = new LinkedList<>();
+        List<Coordinates> adjacent = adjacentCoordinates(location);
+        for (Coordinates next : adjacent) {
+            if (getAbstractEntitytAt(next) == null) {
                 free.add(next);
             }
         }
@@ -149,9 +154,9 @@ public class Field {
      *            The location from which to generate an adjacency.
      * @return A valid location within the grid area.
      */
-    public Location freeAdjacentLocation(Location location) {
+    public Coordinates freeAdjacentCoordinates(Coordinates location) {
         // The available free ones.
-        List<Location> free = getFreeAdjacentLocations(location);
+        List<Coordinates> free = getFreeAdjacentCoordinates(location);
         if (free.size() > 0) {
             return free.get(0);
         } else {
@@ -168,13 +173,13 @@ public class Field {
      *            The location from which to generate adjacencies.
      * @return A list of locations adjacent to that given.
      */
-    public List<Location> adjacentLocations(Location location) {
-        assert location != null : "Null location passed to adjacentLocations";
+    public List<Coordinates> adjacentCoordinates(Coordinates location) {
+        assert location != null : "Null location passed to adjacentCoordinates";
         // The list of locations to be returned.
-        List<Location> locations = new LinkedList<>();
+        List<Coordinates> locations = new LinkedList<>();
         if (location != null) {
-            int row = location.getRow();
-            int col = location.getCol();
+            int row = location.getX();
+            int col = location.getY();
             for (int roffset = -1; roffset <= 1; roffset++) {
                 int nextRow = row + roffset;
                 if (nextRow >= 0 && nextRow < depth) {
@@ -183,7 +188,7 @@ public class Field {
                         // Exclude invalid locations and the original location.
                         if (nextCol >= 0 && nextCol < width
                                 && (roffset != 0 || coffset != 0)) {
-                            locations.add(new Location(nextRow, nextCol));
+                            locations.add(new Coordinates(nextRow, nextCol));
                         }
                     }
                 }

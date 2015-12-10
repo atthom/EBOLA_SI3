@@ -1,5 +1,6 @@
 package plague.inc;
 
+import java.math.BigInteger;
 
 /**
  * 
@@ -11,7 +12,8 @@ package plague.inc;
 public enum Viruses {
 
 	H5N1(2,1),
-	H1N1(2,1);
+	H1N1(2,1),
+	NOPROBLEM(1000000,1000000);
 
 	private float coeff_mortality;
 	private float coeff_contagious;
@@ -24,11 +26,11 @@ public enum Viruses {
 		this.animalIncubationTime = tA;
 		
 	}
-	protected int getHumanIncubationTime() {
+	public int getHumanIncubationTime() {
 		return humanIncubationTime;
 	}
 
-	protected int getAnimalIncubationTime() {
+	public int getAnimalIncubationTime() {
 		return animalIncubationTime;
 	}
 }
