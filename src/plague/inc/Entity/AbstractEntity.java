@@ -6,28 +6,25 @@
 package plague.inc.Entity;
 
 import java.util.List;
+import FluGraph.core.Field;
 import java.util.Objects;
-
-import FluGraph.Field;
-import plague.inc.Coordinates;
-import plague.inc.Map;
-import plague.inc.State;
-import plague.inc.Viruses;
+import plague.inc.map.Coordinates;
+import plague.inc.virus.Viruses;
 
 /**
  *
  * @author user
  */
 public abstract class AbstractEntity {
-	//ajout des attributs inspirés de Fox&Rabbits
-	protected boolean alive;
-	protected Field field;
-	protected int StatusTime = 0;
-	
+    //ajout des attributs inspirï¿½s de Fox&Rabbits
+
+    protected boolean alive;
+    protected Field field;
+    protected int StatusTime = 0;
+
     protected State state;
     protected Viruses virus;
     protected Coordinates coord;
-    
 
     public AbstractEntity() {
         state = State.HEALTHY;
@@ -35,9 +32,10 @@ public abstract class AbstractEntity {
         coord = new Coordinates(0, 0);
     }
 
-    public boolean isAlive(){
-    	return alive;
+    public boolean isAlive() {
+        return alive;
     }
+
     public State getS() {
         return state;
     }
@@ -50,28 +48,28 @@ public abstract class AbstractEntity {
         return virus;
     }
 
+    public Coordinates getCoord() {
+        return coord;
+    }
+
     public void setCoord(Coordinates c) {
         this.coord = c;
     }
 
-    public void move(Map map) {
-        coord = map.move(coord, coord.randomize());
-    }
-
-    protected Coordinates getCoord() {
-        return coord;
+    public Coordinates move() {
+        return coord.randomize();
     }
 
     protected int getStatusTime() {
         return StatusTime;
     }
 // a revoir
+
     public abstract void contact(AbstractEntity abs);
 
-
     /**
-     * Make this animal act - that is: make it do
-     * whatever it wants/needs to do.
+     * Make this animal act - that is: make it do whatever it wants/needs to do.
+     *
      * @param newAnimals A list to receive newly born animals.
      */
     abstract public void act(List<AbstractEntity> newEntities);
@@ -89,15 +87,15 @@ public abstract class AbstractEntity {
     /**
      * Un individu meurt
      */
-    protected void die(){
-       alive = false;
-       if(coord != null) {
-	       field.clear(coord);
-	       coord = null;
-	       field = null;
-       }
+    protected void die() {
+        alive = false;
+        if (coord != null) {
+            field.clear(coord);
+            coord = null;
+            field = null;
+        }
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -124,19 +122,20 @@ public abstract class AbstractEntity {
         }
         return true;
     }
+
     /**
      * Place the animal at the new location in the given field.
+     *
      * @param newLocation The animal's new location.
      */
-    protected void setCoordinates(Coordinates newLocation)
-    {
-        if(coord != null) {
+    protected void setCoordinates(Coordinates newLocation) {
+        if (coord != null) {
             field.clear(coord);
         }
         coord = newLocation;
         field.place(this, newLocation);
     }
-    
+
     protected abstract void incrementStatusTime();
 
     protected abstract void StateChange();

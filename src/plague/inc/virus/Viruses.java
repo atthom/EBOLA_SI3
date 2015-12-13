@@ -1,4 +1,4 @@
-package plague.inc;
+package plague.inc.virus;
 
 import java.math.BigInteger;
 

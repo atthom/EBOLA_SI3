@@ -5,6 +5,7 @@
  */
 package plague.inc;
 
+import plague.inc.virus.Virus;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;

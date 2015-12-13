@@ -1,12 +1,12 @@
-package FluGraph;
+package FluGraph.core;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import plague.inc.Coordinates;
 import plague.inc.Entity.AbstractEntity;
+import plague.inc.map.Coordinates;
 
 /**
  * Represent a rectangular grid of field positions. Each position is able to
@@ -54,11 +54,10 @@ public class Field {
     /**
      * Clear the given location.
      * 
-     * @param location
-     *            The location to clear.
+     * @param coord
      */
-    public void clear(Coordinates cord) {
-        field[cord.getX()][cord.getY()] = null;
+    public void clear(Coordinates coord) {
+        field[coord.getX()][coord.getY()] = null;
     }
 
     /**

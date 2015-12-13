@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package plague.inc;
+package plague.inc.map;
 
 import Exceptions.PlagueRuntimeException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import plague.inc.Entity.AbstractEntity;
 
 /**
@@ -16,7 +17,7 @@ import plague.inc.Entity.AbstractEntity;
  */
 public class Map {
 
-    private HashMap<Coordinates, AbstractEntity> map;
+    private final HashMap<Coordinates, AbstractEntity> map;
     private ArrayList<Coordinates> coords;
     private int yaxis, xaxis;
 
@@ -32,18 +33,24 @@ public class Map {
         coords.add(c);
         map.put(c, a);
     }
-    
-    private void remove(Coordinates c) {
-        for(Coordinates cc : coords) {
-            if(cc.equals(c)) {
-                map.remove(cc);
+
+    private void maj(Coordinates current, Coordinates newone) {
+        for (Iterator<Coordinates> iterator = coords.iterator(); iterator.hasNext();) {
+            Coordinates coord = iterator.next();
+            if (coord.equals(current)) {
+                coords.add(newone);
+                map.put(newone, map.get(coord));
+                map.remove(coord);
+                coords.remove(coord);
+               
+                break;
             }
         }
     }
 
     public void add(ArrayList<AbstractEntity> a) {
         if (a.size() >= yaxis * xaxis) {
-            throw new PlagueException("Pas assez de  place pour les entitées !");
+            throw new PlagueRuntimeException("Pas assez de  place pour les entitées !");
         }
 
         for (AbstractEntity a1 : a) {
@@ -78,56 +85,19 @@ public class Map {
         throw new PlagueRuntimeException("Il y a déja quelqu'un ici !");
     }
 
-    public Coordinates move(Coordinates current, Coordinates togo) {
-        if (is_OutOfBound(togo)) {
-            return current;
-        } else {
-            for (Coordinates cc : coords) {
-                if (cc.equals(togo)) {
-                    return current;
-                }
-            }
-            for(Coordinates cc : coords) {
-                if(cc.equals(current)) {
-                    AbstractEntity a = map.get(cc);
-                    map.remove(cc);
-                    put(togo, a);
-                    return togo;
-                }
-            } 
-            return current;
-        }      
+    private boolean can_move(Coordinates togo) {
+        return (!is_OutOfBound(togo)) ? coords.stream().noneMatch((c) -> (c.equals(togo))) : false;
     }
 
     public void move() {
-//        for(Coordinates c : coords) {
-//            map.get(c).move(this);
-//            // this is fucked up, i know... :(
-//        }
-        
-        
-//        ArrayList<Coordinates> coordsbis = new ArrayList<>(coords.size());
-//        int i = 0;
-//        while (coords.size() > 1) {
-//            int randx = (int) (Math.random() * 2) - 1 + coords.get(i).getX();
-//            int randy = (int) (Math.random() * 2) - 1 + coords.get(i).getY();
-//
-//            Coordinates c = new Coordinates(randx, randy);
-//            while ((randx > 0 && randx < yaxis) && (randy > 0 && randy < xaxis) && coords.contains(c) && coordsbis.contains(c)) {
-//                randx = (int) (Math.random() * 2) - 1 + coords.get(i).getX();
-//                randy = (int) (Math.random() * 2) - 1 + coords.get(i).getY();
-//                c = new Coordinates(randx, randy);
-//            }
-//
-//            coordsbis.add(c);
-//            map.put(c, map.get(coords.get(i)));
-//            map.remove(coords.get(i));
-//            coords.remove(i);
-//            i++;
-//        }
-//
-//        coords.addAll(coordsbis);
-
+        for (Coordinates c : coords) {
+            AbstractEntity entity = map.get(c);
+            Coordinates togo = entity.move();
+            if (can_move(togo)) { 
+                maj(c, togo);
+                break;
+            }
+        }
     }
 
     public void print() {
@@ -153,5 +123,4 @@ public class Map {
         }
         System.out.println(s);
     }
-
 }

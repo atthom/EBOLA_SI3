@@ -1,5 +1,6 @@
-package FluGraph;
+package FluGraph.ui;
 
+import FluGraph.core.Field;
 import java.awt.Color;
 
 /**

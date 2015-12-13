@@ -1,14 +1,20 @@
-package FluGraph;
+package FluGraph.core;
 
+import FluGraph.ui.SimulatorView;
+import FluGraph.ui.GraphView;
+import FluGraph.ui.GridView;
+import FluGraph.Animal.Rabbit;
+import FluGraph.Animal.Fox;
 import java.util.Random;
 
-import plague.inc.Coordinates;
+
 import plague.inc.Entity.*;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.awt.Color;
+import plague.inc.map.Coordinates;
 
 /**
  * A simple predator-prey simulator, based on a rectangular field containing
@@ -164,7 +170,7 @@ public class Simulator {
                     Fox fox = new Fox(true, field, location);
                     entities.add(fox);
                 } else if (rand.nextDouble() <= RABBIT_CREATION_PROBABILITY) {
-                    Location location = new Location(row, col);
+                    Coordinates location = new Coordinates(row, col);
                     Rabbit rabbit = new Rabbit(true, field, location);
                     entities.add(rabbit);
                 }

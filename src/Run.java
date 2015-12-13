@@ -2,7 +2,7 @@
 import java.util.ArrayList;
 import plague.inc.Entity.AbstractEntity;
 import plague.inc.Entity.Person;
-import plague.inc.Map;
+import plague.inc.map.Map;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

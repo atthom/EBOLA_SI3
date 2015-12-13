@@ -1,4 +1,4 @@
-package FluGraph;
+package FluGraph.core;
 
 import java.util.HashMap;
 
@@ -51,6 +51,8 @@ public class FieldStats {
     /**
      * Get the number of individuals in the population of a given class.
      * 
+     * @param field
+     * @param key
      * @return An int with the number for this class.
      */
     public int getPopulationCount(Field field, Class key) {

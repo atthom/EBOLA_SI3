@@ -5,6 +5,7 @@
  */
 package plague.inc;
 
+import plague.inc.map.Map;
 import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;

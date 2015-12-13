@@ -1,8 +1,13 @@
-package FluGraph;
+package FluGraph.Animal;
 
+import FluGraph.core.Field;
+import FluGraph.core.Randomizer;
 import java.util.List;
 import java.util.Iterator;
 import java.util.Random;
+import plague.inc.Entity.AbstractEntity;
+import plague.inc.map.Coordinates;
+import plague.inc.virus.Viruses;
 
 /**
  * A simple model of a fox.
@@ -43,7 +48,7 @@ public class Fox extends Animal
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
-    public Fox(boolean randomAge, Field field, Location location)
+    public Fox(boolean randomAge, Field field, Coordinates location)
     {
         super(field, location);
         if(randomAge) {
@@ -62,23 +67,22 @@ public class Fox extends Animal
      * or die of old age.
      * @param newFoxes A list to return newly born foxes.
      */
-    public void act(List<Animal> newFoxes)
+    public void act(List<AbstractEntity> newFoxes)
     {
         incrementAge();
         incrementHunger();
         if(isAlive()) {
             giveBirth(newFoxes);            
             // Move towards a source of food if found.
-            Location newLocation = findFood();
+            Coordinates newLocation = findFood();
             if(newLocation == null) { 
                 // No food found - try to move to a free location.
-                newLocation = getField().freeAdjacentLocation(getLocation());
+                newLocation = getField().freeAdjacentCoordinates(getLocation());
             }
             // See if it was possible to move.
             if(newLocation != null) {
                 setLocation(newLocation);
-            }
-            else {
+            }  else {
                 // Overcrowding.
                 setDead();
             }
@@ -112,14 +116,14 @@ public class Fox extends Animal
      * Only the first live rabbit is eaten.
      * @return Where food was found, or null if it wasn't.
      */
-    private Location findFood()
+    private Coordinates findFood()
     {
         Field field = getField();
-        List<Location> adjacent = field.adjacentLocations(getLocation());
-        Iterator<Location> it = adjacent.iterator();
+        List<Coordinates> adjacent = field.adjacentCoordinates(getLocation());
+        Iterator<Coordinates> it = adjacent.iterator();
         while(it.hasNext()) {
-            Location where = it.next();
-            Object animal = field.getObjectAt(where);
+            Coordinates where = it.next();
+            Object animal = field.getAbstractEntitytAt(where);
             if(animal instanceof Rabbit) {
                 Rabbit rabbit = (Rabbit) animal;
                 if(rabbit.isAlive()) { 
@@ -137,15 +141,15 @@ public class Fox extends Animal
      * New births will be made into free adjacent locations.
      * @param newFoxes A list to return newly born foxes.
      */
-    private void giveBirth(List<Animal> newFoxes)
+    private void giveBirth(List<AbstractEntity> newFoxes)
     {
         // New foxes are born into adjacent locations.
         // Get a list of adjacent free locations.
         Field field = getField();
-        List<Location> free = field.getFreeAdjacentLocations(getLocation());
+        List<Coordinates> free = field.getFreeAdjacentCoordinates(getLocation());
         int births = breed();
         for(int b = 0; b < births && free.size() > 0; b++) {
-            Location loc = free.remove(0);
+            Coordinates loc = free.remove(0);
             Fox young = new Fox(false, field, loc);
             newFoxes.add(young);
         }
@@ -171,5 +175,30 @@ public class Fox extends Animal
     private boolean canBreed()
     {
         return age >= BREEDING_AGE;
+    }
+
+    @Override
+    public void contact(AbstractEntity abs) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected void becomeSick(Viruses v) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected void becomeContagious() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected void incrementStatusTime() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected void StateChange() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
