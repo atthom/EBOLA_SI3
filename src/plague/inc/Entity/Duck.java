@@ -7,6 +7,9 @@ package plague.inc.Entity;
 
 import java.util.List;
 
+import FluGraph.Field;
+import plague.inc.Coordinates;
+import plague.inc.State;
 import plague.inc.Viruses;
 
 /**
@@ -15,14 +18,24 @@ import plague.inc.Viruses;
  */
 public class Duck  extends Animals {
 
-    public Duck() {
+    public Duck(Field field,Coordinates coord) {
+    	super(field,coord);
+    	this.StatusTime = 0;
+    	this.virus = Viruses.NOPROBLEM;
     }
 
     
     
     @Override
-    public void Contact(AbstractEntity abs) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void contact(AbstractEntity abs) {
+		if(this.state.equals(State.CONTAGIOUS)){
+			if(abs.getClass().getTypeName().equals("Chicken") || abs.getClass().getTypeName().equals("Duck") || abs.getClass().getTypeName().equals("Person"))
+				abs.becomeSick(this.virus);
+		}
+		else{
+			if(abs.state.equals(State.CONTAGIOUS))
+				abs.becomeSick(this.virus);
+		}
     }
 
 
@@ -61,6 +74,20 @@ public class Duck  extends Animals {
 
 	@Override
 	public void act(List<AbstractEntity> newEntities) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void incrementStatusTime() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	protected void StateChange() {
 		// TODO Auto-generated method stub
 		
 	}

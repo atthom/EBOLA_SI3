@@ -96,8 +96,7 @@ public class Chicken extends Animals {
 
 	@Override
 	public boolean isAlive() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.alive;
 	}
 
 
