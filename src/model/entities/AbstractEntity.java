@@ -97,7 +97,7 @@ public abstract class AbstractEntity {
         this.incubationTime = incubationTime;
     }
 
-    public void setDisease(Virus v) {
+    public void setVirus(Virus v) {
         this.virus = v;
     }
 

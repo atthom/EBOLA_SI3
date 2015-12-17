@@ -107,4 +107,8 @@ public abstract class Animal extends AbstractEntity{
 		return tauxSocialHumain;
 	}
 
+    public void setTauxSocialHumain(double humanSocialRate) {
+        this.tauxSocialHumain = humanSocialRate;
+    }
+
 }

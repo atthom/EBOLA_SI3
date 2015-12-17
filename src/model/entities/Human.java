@@ -102,7 +102,7 @@ public class Human extends AbstractEntity implements SeDeplace{
 		if (rand.nextDouble() <= this.getVirus().getInfectionRate()) {
             AbstractEntity e = (AbstractEntity) getField().getObjectAt(location);
             if (e.name.equals(Person.HUMAN)) {
-                e.setDisease(this.getVirus());
+                e.setVirus(this.getVirus());
                 e.setState(State.SICK);
                 e.setIncubationTime(this.getVirus().getIncubationTime());
                 return true;
