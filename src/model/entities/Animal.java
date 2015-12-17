@@ -84,8 +84,8 @@ public abstract class Animal extends AbstractEntity{
 		if(this.rand.nextDouble() <= this.getVirus().getInfectionRate()){
 			AbstractEntity entite = (AbstractEntity) getField().getObjectAt(location);
 			
-			switch (entite.getClass().getName()) {
-			case "Human" :
+			switch (entite.getName()) {
+			case HUMAN :
                 if (rand.nextDouble() <= getTauxSocialHumain() && isAvaibleToDisease(entite)) {
                     infectEntity(entite);
                     return true;
