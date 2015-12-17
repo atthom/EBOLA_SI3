@@ -1,20 +1,13 @@
-package FluGraph.core;
+package model.map;
 
-import FluGraph.ui.SimulatorView;
-import FluGraph.ui.GraphView;
-import FluGraph.ui.GridView;
-import FluGraph.Animal.Rabbit;
-import FluGraph.Animal.Fox;
 import java.util.Random;
 
-
-import plague.inc.Entity.*;
+import model.entities.Animal;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.awt.Color;
-import plague.inc.map.Coordinates;
 
 /**
  * A simple predator-prey simulator, based on a rectangular field containing
@@ -34,8 +27,8 @@ public class Simulator {
     // The probability that a rabbit will be created in any given grid position.
     private static final double RABBIT_CREATION_PROBABILITY = 0.08;
 
-    // List of entities in the field.
-    private List<AbstractEntity> entities;
+    // List of animals in the field.
+    private List<Animal> animals;
     // The current state of the field.
     private Field field;
     // The current step of the simulation.
@@ -46,8 +39,8 @@ public class Simulator {
     /**
      * Construct a simulation field with default size.
      */
-    public Simulator() {
-        this(DEFAULT_DEPTH, DEFAULT_WIDTH);
+    public Simulator(int nbvoisins) {
+        this(DEFAULT_DEPTH, DEFAULT_WIDTH, nbvoisins);
     }
 
     /**
@@ -58,7 +51,7 @@ public class Simulator {
      * @param width
      *            Width of the field. Must be greater than zero.
      */
-    public Simulator(int depth, int width) {
+    public Simulator(int depth, int width, int nbvoisins) {
         if (width <= 0 || depth <= 0) {
             System.out.println("The dimensions must be greater than zero.");
             System.out.println("Using default values.");
@@ -66,23 +59,19 @@ public class Simulator {
             width = DEFAULT_WIDTH;
         }
 
-        entities = new ArrayList<>();
-        field = new Field(depth, width);
+        animals = new ArrayList<>();
+        field = new Field(depth, width, nbvoisins);
 
         views = new ArrayList<>();
 
         SimulatorView view = new GridView(depth, width);
-        //bleu clair --> Homme
-        view.setColor(Person.class, new Color(36, 191, 200));
-        //Orange clair --> Poulet
-        view.setColor(Chicken.class,new Color(255,128,0) );
+      //  view.setColor(Rabbit.class, Color.ORANGE);
+      //  view.setColor(Fox.class, Color.BLUE);
         views.add(view);
 
         view = new GraphView(500, 150, 500);
-        //rose clair --> Cochon
-        view.setColor(Pig.class,Color.ORANGE);
-        //jaune clair --> Canard
-        view.setColor(Duck.class, Color.YELLOW);
+     //   view.setColor(Rabbit.class, Color.BLACK);
+     //   view.setColor(Fox.class, Color.RED);
         views.add(view);
 
         // Setup a valid starting point.
@@ -117,19 +106,19 @@ public class Simulator {
     public void simulateOneStep() {
         step++;
 
-        // Provide space for newborn entities.
-        List<AbstractEntity> newentities = new ArrayList<>();
+        // Provide space for newborn animals.
+        List<Animal> newAnimals = new ArrayList<>();
         // Let all rabbits act.
-        for (Iterator<AbstractEntity> it = entities.iterator(); it.hasNext();) {
-            AbstractEntity entity = it.next();
-            entity.act(newentities);
-            if (!entity.isAlive()) {
+        for (Iterator<Animal> it = animals.iterator(); it.hasNext();) {
+            Animal animal = it.next();
+            animal.action();
+            if (!animal.isAlive()) {
                 it.remove();
             }
         }
 
         // Add the newly born foxes and rabbits to the main lists.
-        entities.addAll(newentities);
+        animals.addAll(newAnimals);
 
         updateViews();
     }
@@ -139,7 +128,7 @@ public class Simulator {
      */
     public void reset() {
         step = 0;
-        entities.clear();
+        animals.clear();
         for (SimulatorView view : views) {
             view.reset();
         }
@@ -166,13 +155,13 @@ public class Simulator {
         for (int row = 0; row < field.getDepth(); row++) {
             for (int col = 0; col < field.getWidth(); col++) {
                 if (rand.nextDouble() <= FOX_CREATION_PROBABILITY) {
-                    Coordinates location = new Coordinates(row, col);
-                    Fox fox = new Fox(true, field, location);
-                    entities.add(fox);
+                    Location location = new Location(row, col);
+    //                Fox fox = new Fox(true, field, location);
+  //                  animals.add(fox);
                 } else if (rand.nextDouble() <= RABBIT_CREATION_PROBABILITY) {
-                    Coordinates location = new Coordinates(row, col);
-                    Rabbit rabbit = new Rabbit(true, field, location);
-                    entities.add(rabbit);
+                    Location location = new Location(row, col);
+      //              Rabbit rabbit = new Rabbit(true, field, location);
+      //              animals.add(rabbit);
                 }
                 // else leave the location empty.
             }

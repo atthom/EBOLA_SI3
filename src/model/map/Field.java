@@ -1,21 +1,16 @@
-package FluGraph.core;
+package model.map;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import plague.inc.Entity.AbstractEntity;
-import plague.inc.map.Coordinates;
-
 /**
  * Represent a rectangular grid of field positions. Each position is able to
- * store a single entity.
+ * store a single animal.
  * 
  * @author David J. Barnes and Michael Kölling
- * @override Adrien Prestini
  * @version 2011.07.31
- * @VersionNew 2015.12.10
  */
 public class Field {
     // A random number generator for providing random locations.
@@ -23,8 +18,10 @@ public class Field {
 
     // The depth and width of the field.
     private int depth, width;
-    // Storage for the entitys.
-    private AbstractEntity[][] field;
+    // Storage for the animals.
+    private Object[][] field;
+    
+    private int nbVoisins;
 
     /**
      * Represent a field of the given dimensions.
@@ -34,10 +31,11 @@ public class Field {
      * @param width
      *            The width of the field.
      */
-    public Field(int depth, int width) {
+    public Field(int depth, int width, int neighbors) {
         this.depth = depth;
         this.width = width;
-        field = new AbstractEntity[depth][width];
+        field = new Object[depth][width];
+        nbVoisins = neighbors;
     }
 
     /**
@@ -54,61 +52,62 @@ public class Field {
     /**
      * Clear the given location.
      * 
-     * @param coord
+     * @param location
+     *            The location to clear.
      */
-    public void clear(Coordinates coord) {
-        field[coord.getX()][coord.getY()] = null;
+    public void clear(Location location) {
+        field[location.getRow()][location.getCol()] = null;
     }
 
     /**
-     * Place an entity at the given location. If there is already an entity at
+     * Place an animal at the given location. If there is already an animal at
      * the location it will be lost.
      * 
-     * @param entity
-     *            The entity to be placed.
+     * @param animal
+     *            The animal to be placed.
      * @param row
      *            Row coordinate of the location.
      * @param col
      *            Column coordinate of the location.
      */
-    public void place(AbstractEntity entity, int row, int col) {
-        place(entity, new Coordinates(row, col));
+    public void place(Object animal, int row, int col) {
+        place(animal, new Location(row, col));
     }
 
     /**
-     * Place an entity at the given location. If there is already an entity at
+     * Place an animal at the given location. If there is already an animal at
      * the location it will be lost.
      * 
-     * @param entity
-     *            The entity to be placed.
+     * @param animal
+     *            The animal to be placed.
      * @param location
-     *            Where to place the entity.
+     *            Where to place the animal.
      */
-    public void place(AbstractEntity entity, Coordinates location) {
-        field[location.getX()][location.getY()] = entity;
+    public void place(Object animal, Location location) {
+        field[location.getRow()][location.getCol()] = animal;
     }
 
     /**
-     * Return the entity at the given location, if any.
+     * Return the animal at the given location, if any.
      * 
      * @param location
      *            Where in the field.
-     * @return The entity at the given location, or null if there is none.
+     * @return The animal at the given location, or null if there is none.
      */
-    public AbstractEntity getAbstractEntitytAt(Coordinates location) {
-        return getAbstractEntitytAt(location.getX(), location.getY());
+    public Object getObjectAt(Location location) {
+        return getObjectAt(location.getRow(), location.getCol());
     }
 
     /**
-     * Return the entity at the given location, if any.
+     * Return the animal at the given location, if any.
      * 
      * @param row
      *            The desired row.
      * @param col
      *            The desired column.
-     * @return The entity at the given location, or null if there is none.
+     * @return The animal at the given location, or null if there is none.
      */
-    public AbstractEntity getAbstractEntitytAt(int row, int col) {
+    public Object getObjectAt(int row, int col) {
         return field[row][col];
     }
 
@@ -121,23 +120,23 @@ public class Field {
      *            The location from which to generate an adjacency.
      * @return A valid location within the grid area.
      */
-    public Coordinates randomAdjacentCoordinates(Coordinates location) {
-        List<Coordinates> adjacent = adjacentCoordinates(location);
+    public Location randomAdjacentLocation(Location location) {
+        List<Location> adjacent = adjacentLocations(location);
         return adjacent.get(0);
     }
 
     /**
-     * Get a shuffled list of the free adjacent coordinates.
+     * Get a shuffled list of the free adjacent locations.
      * 
      * @param location
      *            Get locations adjacent to this.
-     * @return A list of free adjacent coordinates.
+     * @return A list of free adjacent locations.
      */
-    public List<Coordinates> getFreeAdjacentCoordinates(Coordinates location) {
-        List<Coordinates> free = new LinkedList<>();
-        List<Coordinates> adjacent = adjacentCoordinates(location);
-        for (Coordinates next : adjacent) {
-            if (getAbstractEntitytAt(next) == null) {
+    public List<Location> getFreeAdjacentLocations(Location location) {
+        List<Location> free = new LinkedList<>();
+        List<Location> adjacent = adjacentLocations(location);
+        for (Location next : adjacent) {
+            if (getObjectAt(next) == null) {
                 free.add(next);
             }
         }
@@ -153,9 +152,9 @@ public class Field {
      *            The location from which to generate an adjacency.
      * @return A valid location within the grid area.
      */
-    public Coordinates freeAdjacentCoordinates(Coordinates location) {
+    public Location freeAdjacentLocation(Location location) {
         // The available free ones.
-        List<Coordinates> free = getFreeAdjacentCoordinates(location);
+        List<Location> free = getFreeAdjacentLocations(location);
         if (free.size() > 0) {
             return free.get(0);
         } else {
@@ -172,13 +171,13 @@ public class Field {
      *            The location from which to generate adjacencies.
      * @return A list of locations adjacent to that given.
      */
-    public List<Coordinates> adjacentCoordinates(Coordinates location) {
-        assert location != null : "Null location passed to adjacentCoordinates";
+    public List<Location> adjacentLocations(Location location) {
+        assert location != null : "Null location passed to adjacentLocations";
         // The list of locations to be returned.
-        List<Coordinates> locations = new LinkedList<>();
+        List<Location> locations = new LinkedList<>();
         if (location != null) {
-            int row = location.getX();
-            int col = location.getY();
+            int row = location.getRow();
+            int col = location.getCol();
             for (int roffset = -1; roffset <= 1; roffset++) {
                 int nextRow = row + roffset;
                 if (nextRow >= 0 && nextRow < depth) {
@@ -187,7 +186,7 @@ public class Field {
                         // Exclude invalid locations and the original location.
                         if (nextCol >= 0 && nextCol < width
                                 && (roffset != 0 || coffset != 0)) {
-                            locations.add(new Coordinates(nextRow, nextCol));
+                            locations.add(new Location(nextRow, nextCol));
                         }
                     }
                 }
@@ -216,5 +215,16 @@ public class Field {
      */
     public int getWidth() {
         return width;
+    }
+    
+    public List<Location> getBusyAdjacentLocations(Location location) {
+        List<Location> busy = new LinkedList<>();
+        List<Location> adjacent = adjacentLocations(location);
+        for (Location next : adjacent) {
+            if (getObjectAt(next) != null) {
+                busy.add(next);
+            }
+        }
+        return busy;
     }
 }

@@ -1,4 +1,4 @@
-package FluGraph.core;
+package model.map;
 
 import java.util.Random;
 

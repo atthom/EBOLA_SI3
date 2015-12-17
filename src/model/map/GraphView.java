@@ -1,7 +1,5 @@
-package FluGraph.ui;
+package model.map;
 
-import FluGraph.core.Field;
-import FluGraph.core.FieldStats;
 import java.awt.*;
 import java.awt.image.*;
 import javax.swing.*;

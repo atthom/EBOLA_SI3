@@ -1,8 +1,6 @@
-package FluGraph.core;
+package model.map;
 
 import java.util.HashMap;
-
-import plague.inc.Entity.AbstractEntity;
 
 /**
  * This class collects and provides some statistical data on the state of a
@@ -51,8 +49,6 @@ public class FieldStats {
     /**
      * Get the number of individuals in the population of a given class.
      * 
-     * @param field
-     * @param key
      * @return An int with the number for this class.
      */
     public int getPopulationCount(Field field, Class key) {
@@ -132,9 +128,9 @@ public class FieldStats {
         reset();
         for (int row = 0; row < field.getDepth(); row++) {
             for (int col = 0; col < field.getWidth(); col++) {
-                AbstractEntity entity = field.getAbstractEntitytAt(row, col);
-                if (entity != null) {
-                    incrementCount(entity.getClass());
+                Object animal = field.getObjectAt(row, col);
+                if (animal != null) {
+                    incrementCount(animal.getClass());
                 }
             }
         }
