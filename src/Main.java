@@ -1,4 +1,5 @@
-package model.map;
+
+import model.map.Simulator;
 
 public class Main {
 
