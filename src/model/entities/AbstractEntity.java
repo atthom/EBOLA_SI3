@@ -39,7 +39,7 @@ public abstract class AbstractEntity {
         state = virus.equals(Virus.OK) ? State.HEALTHY : State.SICK;
     }
 
-    protected abstract void action();
+    public abstract void action();
 
     protected abstract void interagit();
 
