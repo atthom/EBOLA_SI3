@@ -1,6 +1,7 @@
 package model.entities;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -10,14 +11,23 @@ import model.map.Randomizer;
 import model.virus.Virus;
 
 public class Human extends AbstractEntity implements SeDeplace{
-    private static final Random rand = Randomizer.getRandom();
+	protected static final Virus VIRUS_PAR_DEFAUT = Virus.OK;
+	protected static final double TAUX_ACTIVITE_DEFAUT = 0.5;
+	protected static final double TAUX_ACTIVITE_MALADE_DEFAUT = 0.6;
+	protected static final double TAUX_SOCIAL_DEFAUT = 0.9;
+	protected static final ArrayList<Virus> VIRUS_POSSIBLE = new ArrayList<Virus>() {{
+        add(Virus.H1N1);
+        add(Virus.H5N1);
+    }};
+	
+	private static final Random rand = Randomizer.getRandom();
 
     private double activityRate;
     private int recoveringTime;
     private int contagionTime;
     
 	public Human(Location location, Field field) {
-		this(location, field,Constantes.VIRUS_PAR_DEFAUT,Constantes.TAUX_ACTIVITE_DEFAUT,Constantes.TAUX_SOCIAL_DEFAUT,Constantes.VIRUS_POSSIBLE);
+		this(location, field,VIRUS_PAR_DEFAUT, TAUX_ACTIVITE_DEFAUT, TAUX_SOCIAL_DEFAUT, VIRUS_POSSIBLE);
 	}
     public Human(Location location, Field field, Virus disease, double activityRate, double socialRate, List<Virus> avaibleDisease) {
         super(location, field, disease);
@@ -35,7 +45,7 @@ public class Human extends AbstractEntity implements SeDeplace{
 	protected void action() {
 		if(isAlive()){
 			if(this.rand.nextDouble() <= this.activityRate){
-				if (this.getState().equals(State.HEALTHY) || rand.nextDouble() <= Constantes.TAUX_ACTIVITE_MALADE_DEFAUT) {
+				if (this.getState().equals(State.HEALTHY) || rand.nextDouble() <= TAUX_ACTIVITE_MALADE_DEFAUT) {
                     seDeplace();
                 }
 			}

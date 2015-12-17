@@ -5,5 +5,4 @@ public enum Person {
 	DUCK,
 	CHICKEN,
 	PIG
-	
 }
