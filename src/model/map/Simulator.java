@@ -8,7 +8,10 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.awt.Color;
+import model.entities.AbstractEntity;
+import model.entities.Chicken;
 import model.entities.Duck;
+import model.entities.Human;
 import model.entities.Pig;
 import model.virus.Virus;
 
@@ -27,12 +30,13 @@ public class Simulator {
     // The default depth of the grid.
     private static final int DEFAULT_DEPTH = 80;
     // The probability that a fox will be created in any given grid position.
-    private static final double FOX_CREATION_PROBABILITY = 0.02;
+    private static final double PIG_CREATION_PROBABILITY = 0.02;
     // The probability that a rabbit will be created in any given grid position.
-    private static final double RABBIT_CREATION_PROBABILITY = 0.08;
-
+    private static final double DUCK_CREATION_PROBABILITY = 0.04;
+    private static final double CHICKEN_CREATION_PROBABILITY = 0.06;
+    private static final double HUMAN_CREATION_PROBABILITY = 0.08;
     // List of animals in the field.
-    private List<Animal> animals;
+    private List<AbstractEntity> entities;
     // The current state of the field.
     private Field field;
     // The current step of the simulation.
@@ -61,7 +65,7 @@ public class Simulator {
             width = DEFAULT_WIDTH;
         }
 
-        animals = new ArrayList<>();
+        entities = new ArrayList<>();
         field = new Field(depth, width, nbvoisins);
 
         views = new ArrayList<>();
@@ -110,16 +114,16 @@ public class Simulator {
         // Provide space for newborn animals.
         List<Animal> newAnimals = new ArrayList<>();
         // Let all rabbits act.
-        for (Iterator<Animal> it = animals.iterator(); it.hasNext();) {
-            Animal animal = it.next();
-            animal.action();
-            if (!animal.isAlive()) {
+        for (Iterator<AbstractEntity> it = entities.iterator(); it.hasNext();) {
+            AbstractEntity entity = it.next();
+            entity.action();
+            if (!entity.isAlive()) {
                 it.remove();
             }
         }
 
         // Add the newly born foxes and rabbits to the main lists.
-        animals.addAll(newAnimals);
+        entities.addAll(newAnimals);
 
         updateViews();
     }
@@ -129,7 +133,7 @@ public class Simulator {
      */
     public void reset() {
         step = 0;
-        animals.clear();
+        entities.clear();
         for (SimulatorView view : views) {
             view.reset();
         }
@@ -155,19 +159,31 @@ public class Simulator {
         field.clear();
         for (int row = 0; row < field.getDepth(); row++) {
             for (int col = 0; col < field.getWidth(); col++) {
-                if (rand.nextDouble() <= FOX_CREATION_PROBABILITY) {
+                if (rand.nextDouble() <= PIG_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
                     //                Fox fox = new Fox(true, field, location);
                     //                  animals.add(fox);
                     Pig p = new Pig(location, field, Virus.OK);
-                    animals.add(p);
-                } else if (rand.nextDouble() <= RABBIT_CREATION_PROBABILITY) {
+                    entities.add(p);
+                } else if (rand.nextDouble() <= DUCK_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
                     //              Rabbit rabbit = new Rabbit(true, field, location);
                     //              animals.add(rabbit);
                     Duck d = new Duck(location, field, Virus.OK);
-                    animals.add(d);
-                }
+                    entities.add(d);
+                }  else if (rand.nextDouble() <= CHICKEN_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col);
+                    //              Rabbit rabbit = new Rabbit(true, field, location);
+                    //              animals.add(rabbit);
+                    Chicken d = new Chicken(location, field, Virus.OK);
+                    entities.add(d);
+                }  else if (rand.nextDouble() <= HUMAN_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col);
+                    //              Rabbit rabbit = new Rabbit(true, field, location);
+                    //              animals.add(rabbit);
+                    Human h = new Human(location, field);
+                    entities.add(h);
+                }  
                 // else leave the location empty.
             }
         }
