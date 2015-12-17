@@ -8,15 +8,19 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.awt.Color;
+import model.entities.Duck;
+import model.entities.Pig;
+import model.virus.Virus;
 
 /**
  * A simple predator-prey simulator, based on a rectangular field containing
  * rabbits and foxes.
- * 
+ *
  * @author David J. Barnes and Michael Kölling
  * @version 2011.07.31
  */
 public class Simulator {
+
     // Constants representing configuration information for the simulation.
     // The default width for the grid.
     private static final int DEFAULT_WIDTH = 120;
@@ -45,11 +49,9 @@ public class Simulator {
 
     /**
      * Create a simulation field with the given size.
-     * 
-     * @param depth
-     *            Depth of the field. Must be greater than zero.
-     * @param width
-     *            Width of the field. Must be greater than zero.
+     *
+     * @param depth Depth of the field. Must be greater than zero.
+     * @param width Width of the field. Must be greater than zero.
      */
     public Simulator(int depth, int width, int nbvoisins) {
         if (width <= 0 || depth <= 0) {
@@ -65,13 +67,13 @@ public class Simulator {
         views = new ArrayList<>();
 
         SimulatorView view = new GridView(depth, width);
-      //  view.setColor(Rabbit.class, Color.ORANGE);
-      //  view.setColor(Fox.class, Color.BLUE);
+        //  view.setColor(Rabbit.class, Color.ORANGE);
+        //  view.setColor(Fox.class, Color.BLUE);
         views.add(view);
 
         view = new GraphView(500, 150, 500);
-     //   view.setColor(Rabbit.class, Color.BLACK);
-     //   view.setColor(Fox.class, Color.RED);
+        //   view.setColor(Rabbit.class, Color.BLACK);
+        //   view.setColor(Fox.class, Color.RED);
         views.add(view);
 
         // Setup a valid starting point.
@@ -89,9 +91,8 @@ public class Simulator {
     /**
      * Run the simulation from its current state for the given number of steps.
      * Stop before the given number of steps if it ceases to be viable.
-     * 
-     * @param numSteps
-     *            The number of steps to run for.
+     *
+     * @param numSteps The number of steps to run for.
      */
     public void simulate(int numSteps) {
         for (int step = 1; step <= numSteps && views.get(0).isViable(field); step++) {
@@ -156,12 +157,16 @@ public class Simulator {
             for (int col = 0; col < field.getWidth(); col++) {
                 if (rand.nextDouble() <= FOX_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
-    //                Fox fox = new Fox(true, field, location);
-  //                  animals.add(fox);
+                    //                Fox fox = new Fox(true, field, location);
+                    //                  animals.add(fox);
+                    Pig p = new Pig(location, field, Virus.OK);
+                    animals.add(p);
                 } else if (rand.nextDouble() <= RABBIT_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
-      //              Rabbit rabbit = new Rabbit(true, field, location);
-      //              animals.add(rabbit);
+                    //              Rabbit rabbit = new Rabbit(true, field, location);
+                    //              animals.add(rabbit);
+                    Duck d = new Duck(location, field, Virus.OK);
+                    animals.add(d);
                 }
                 // else leave the location empty.
             }

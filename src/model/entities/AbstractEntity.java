@@ -1,6 +1,5 @@
 package model.entities;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,14 +7,14 @@ import model.map.Field;
 import model.map.Location;
 import model.virus.Virus;
 
-
 /**
  *
  * @author Adrien Prestini
  */
 public abstract class AbstractEntity {
-    //ajout des attributs inspirés de Fox&Rabbits
-	protected Person name;
+
+    //ajout des attributs inspirï¿½s de Fox&Rabbits
+    protected Person name;
     protected boolean alive;
     protected Field field;
     protected int incubationTime;
@@ -25,22 +24,20 @@ public abstract class AbstractEntity {
     protected Virus virus;
     protected Location location;
 
-    public AbstractEntity(Location location, Field field){
-        this(location,field,null);
+    public AbstractEntity(Location location, Field field) {
+        this(location, field, null);
     }
 
+    public AbstractEntity(Location location, Field field, Virus v) {
 
-    public AbstractEntity(Location location, Field field, Virus v){
-
-        this.field=field;
-        this.alive=true;
+        this.field = field;
+        this.alive = true;
         setLocation(location);
-        potentialVirus=new ArrayList<>();
-        incubationTime=0;
-        this.virus=v;
-        state = virus.equals(Virus.OK) ?State.HEALTHY : State.SICK ;
+        potentialVirus = new ArrayList<>();
+        incubationTime = 0;
+        this.virus = v;
+        state = virus.equals(Virus.OK) ? State.HEALTHY : State.SICK;
     }
-
 
     protected abstract void action();
 
@@ -50,32 +47,33 @@ public abstract class AbstractEntity {
 
     protected abstract boolean infecte(Location entite);
 
-    public boolean isAlive(){
+    public boolean isAlive() {
         return alive;
     }
 
-    protected boolean isAvaibleToVirus(AbstractEntity species){
+    protected boolean isAvaibleToVirus(AbstractEntity species) {
         return species.getPotentialVirus().contains(this.getVirus());
     }
 
-    protected void infectEntity(AbstractEntity entity){
-    	entity.virus=this.virus;
-    	entity.state=State.SICK;
-    	entity.incubationTime = virus.getIncubationTime();
+    protected void infectEntity(AbstractEntity entity) {
+        entity.virus = this.virus;
+        entity.state = State.SICK;
+        entity.incubationTime = virus.getIncubationTime();
     }
-    public Location getLocation(){
+
+    public Location getLocation() {
         return location;
     }
 
-    public Field getField(){
+    public Field getField() {
         return field;
     }
 
-    public State getState(){
+    public State getState() {
         return state;
     }
 
-    protected Virus getVirus(){
+    protected Virus getVirus() {
         return virus;
     }
 
@@ -91,7 +89,11 @@ public abstract class AbstractEntity {
         return incubationTime;
     }
 
-    public Person getName(){return name;};
+    public Person getName() {
+        return name;
+    }
+
+    ;
 
     public void setIncubationTime(int incubationTime) {
         this.incubationTime = incubationTime;
@@ -105,8 +107,8 @@ public abstract class AbstractEntity {
         this.state = state;
     }
 
-    protected void setLocation(Location newLocation){
-        if(location != null) {
+    protected void setLocation(Location newLocation) {
+        if (location != null) {
             field.clear(location);
         }
         location = newLocation;
@@ -124,21 +126,24 @@ public abstract class AbstractEntity {
     public void setSocialRate(double socialRate) {
         this.socialRate = socialRate;
     }
-    
-    protected boolean isAvaibleToDisease(AbstractEntity entite){
+
+    protected boolean isAvaibleToDisease(AbstractEntity entite) {
         return entite.getPotentialVirus().contains(this.getVirus());
     }
 
-   protected abstract void becomeContagious();
-   protected abstract void verifyDead();
-   /**
-    * l'animal infecte tous ces voisins 
-    * @param voisins
-    */
-   	protected void infecteVoisins(List<Location> voisins) {
-   		for(int i =0; i < voisins.size(); i++){
-   			this.infecte(voisins.get(i));
-   		}
-   	}
+    protected abstract void becomeContagious();
+
+    protected abstract void verifyDead();
+
+    /**
+     * l'animal infecte tous ces voisins
+     *
+     * @param voisins
+     */
+    protected void infecteVoisins(List<Location> voisins) {
+        for (int i = 0; i < voisins.size(); i++) {
+            this.infecte(voisins.get(i));
+        }
+    }
 
 }

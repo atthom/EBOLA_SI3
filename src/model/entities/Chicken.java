@@ -1,8 +1,11 @@
 package model.entities;
 
+<<<<<<< HEAD
 
 import java.util.List;
 
+=======
+>>>>>>> 42d440fdbe4c5a371cc5df9e23b6ad2aa6a93a37
 import model.map.Field;
 import model.map.Location;
 import model.virus.Virus;
@@ -22,6 +25,7 @@ public class Chicken extends FlyingThings{
 		this(location, field, DEFAULT_VIRUS, DEFAULT_HUMAN_SOCIAL_RATE, DEFAULT_SOCIAL_RATE,FlyingThings.DEFAULT_AVAIBLE_VIRUS);
 	}
 
+<<<<<<< HEAD
 	public Chicken(Location location, Field field, Virus v, double humanSocialRate, double socialRate, List<Virus> avaibleDisease) {
 	        super(location, field, v);
 	        this.name=Person.CHICKEN;
@@ -29,4 +33,10 @@ public class Chicken extends FlyingThings{
 	        this.setSocialRate(socialRate);
 	        this.getPotentialVirus().addAll(avaibleDisease);
 	}
+=======
+    public Chicken(Location location, Field field, Virus v) {
+        super(location, field, v);
+    }
+
+>>>>>>> 42d440fdbe4c5a371cc5df9e23b6ad2aa6a93a37
 }

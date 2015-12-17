@@ -3,6 +3,8 @@ package model.entities;
 import model.map.Location;
 
 public interface SeDeplace {
-	void seDeplace();
+
+    void seDeplace();
+
     void setLocation(Location newLocation);
 }
