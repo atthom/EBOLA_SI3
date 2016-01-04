@@ -1,9 +1,8 @@
-package model.map;
+package modele.carte;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import modele.etresVivants.EtreVivant;
+
+import java.util.*;
 
 /**
  * Represent a rectangular grid of field positions. Each position is able to
@@ -20,9 +19,17 @@ public class Field {
     private int depth, width;
     // Storage for the animals.
     private Object[][] field;
-    
-    private int nbVoisins;
 
+    private int neighbourhood;
+
+
+    public Field(int depth, int width, int neighbourhood)
+    {
+        this.depth = depth;
+        this.width = width;
+        this.neighbourhood = neighbourhood;
+        field = new Object[depth][width];
+    }
     /**
      * Represent a field of the given dimensions.
      * 
@@ -31,11 +38,10 @@ public class Field {
      * @param width
      *            The width of the field.
      */
-    public Field(int depth, int width, int neighbors) {
+    public Field(int depth, int width) {
         this.depth = depth;
         this.width = width;
         field = new Object[depth][width];
-        nbVoisins = neighbors;
     }
 
     /**
@@ -216,15 +222,21 @@ public class Field {
     public int getWidth() {
         return width;
     }
-    
-    public List<Location> getBusyAdjacentLocations(Location location) {
-        List<Location> busy = new LinkedList<>();
-        List<Location> adjacent = adjacentLocations(location);
-        for (Location next : adjacent) {
-            if (getObjectAt(next) != null) {
-                busy.add(next);
-            }
-        }
-        return busy;
+/*
+    public boolean EstDansChamp(int row, int col){
+
+        return col < width && row < depth && col>=0 && row >=0;
+
     }
+
+    public ArrayList<EtreVivant> methodeEtoile(Location positionDonnee) {
+        ArrayList<EtreVivant> res = new ArrayList<>();
+
+        if(this.EstDansChamp(positionDonnee.getRow()-1,positionDonnee.getCol()) && )
+            res.add((EtreVivant)getObjectAt(new Location(positionDonnee.getRow()-1,positionDonnee.getCol())));
+
+    }
+
+    public ArrayList<EtreVivant> methodeCarree(Location positionDonnee) {
+    }*/
 }

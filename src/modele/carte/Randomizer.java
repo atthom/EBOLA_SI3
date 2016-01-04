@@ -1,4 +1,4 @@
-package model.map;
+package modele.carte;
 
 import java.util.Random;
 

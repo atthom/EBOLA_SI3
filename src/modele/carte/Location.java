@@ -1,4 +1,6 @@
-package model.map;
+package modele.carte;
+
+import java.awt.*;
 
 /**
  * Represent a location in a rectangular grid.
@@ -6,12 +8,8 @@ package model.map;
  * @author David J. Barnes and Michael Kölling
  * @version 2011.07.31
  */
-public class Location
+public class Location extends Point
 {
-    // Row and column positions.
-    private int row;
-    private int col;
-
     /**
      * Represent a row and column.
      * @param row The row.
@@ -19,18 +17,20 @@ public class Location
      */
     public Location(int row, int col)
     {
-        this.row = row;
-        this.col = col;
+        this.x = row;
+        this.y = col;
     }
     
     /**
      * Implement content equality.
+     * @return 
      */
+    @Override
     public boolean equals(Object obj)
     {
         if(obj instanceof Location) {
             Location other = (Location) obj;
-            return row == other.getRow() && col == other.getCol();
+            return x == other.getRow() && y == other.getCol();
         }
         else {
             return false;
@@ -41,9 +41,10 @@ public class Location
      * Return a string of the form row,column
      * @return A string representation of the location.
      */
+    @Override
     public String toString()
     {
-        return row + "," + col;
+        return x + "," + y;
     }
     
     /**
@@ -52,9 +53,10 @@ public class Location
      * unique hash code for each (row, col) pair.
      * @return A hashcode for the location.
      */
+    @Override
     public int hashCode()
     {
-        return (row << 16) + col;
+        return (x << 16) + y;
     }
     
     /**
@@ -62,7 +64,7 @@ public class Location
      */
     public int getRow()
     {
-        return row;
+        return x;
     }
     
     /**
@@ -70,6 +72,6 @@ public class Location
      */
     public int getCol()
     {
-        return col;
+        return y;
     }
 }

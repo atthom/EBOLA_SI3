@@ -1,8 +1,12 @@
-package model.map;
+package vue;
 
 import java.awt.*;
 import java.awt.image.*;
 import javax.swing.*;
+
+import modele.carte.Field;
+import modele.carte.FieldStats;
+
 import java.util.*;
 
 /**
@@ -10,7 +14,7 @@ import java.util.*;
  * line graph over time. In its current version, it can only plot exactly two
  * different classes of animals. If further animals are introduced, they will
  * not currently be displayed.
- * 
+ *
  * @author Michael Kölling and David J. Barnes
  * @version 2011.07.31
  */
@@ -31,19 +35,13 @@ public class GraphView implements SimulatorView {
 
     /**
      * Constructor.
-     * 
+     *
      * @param width
      *            The width of the plotter window (in pixles).
      * @param height
      *            The height of the plotter window (in pixles).
      * @param startMax
      *            The initial maximum value for the y axis.
-     * @param world
-     *            The world object.
-     * @param class1
-     *            The first class to be plotted.
-     * @param width
-     *            The second class to be plotted.
      */
     public GraphView(int width, int height, int startMax) {
         stats = new FieldStats();
@@ -61,12 +59,13 @@ public class GraphView implements SimulatorView {
 
     /**
      * Define a color to be used for a given class of animal.
-     * 
+     *
      * @param animalClass
      *            The animal's Class object.
      * @param color
      *            The color to be used for the given class.
      */
+    @Override
     public void setColor(Class animalClass, Color color) {
         colors.put(animalClass, color);
         classes = colors.keySet();
@@ -78,21 +77,24 @@ public class GraphView implements SimulatorView {
      * work for more (or fewer) than exactly two classes. If the field contains
      * more than two different types of animal, only two of the classes will be
      * plotted.
-     * 
+     *
      * @param step
      *            Which iteration step it is.
      * @param field
      *            The field whose status is to be displayed.
      */
+    @Override
     public void showStatus(int step, Field field) {
         graph.update(step, field, stats);
     }
 
     /**
      * Determine whether the simulation should continue to run.
-     * 
+     *
+     * @param field
      * @return true If there is more than one species alive.
      */
+    @Override
     public boolean isViable(Field field) {
         return stats.isViable(field);
     }
@@ -100,6 +102,7 @@ public class GraphView implements SimulatorView {
     /**
      * Prepare for a new run.
      */
+    @Override
     public void reset() {
         graph.newRun();
     }
@@ -142,7 +145,7 @@ public class GraphView implements SimulatorView {
         // An internal image buffer that is used for painting. For
         // actual display, this image buffer is then copied to screen.
         private BufferedImage graphImage;
-        private int lastVal1, lastVal2;
+        private int lastVal1, lastVal2, lastVal3, lastVal4;
         private int yMax;
 
         /**
@@ -154,6 +157,8 @@ public class GraphView implements SimulatorView {
             clearImage();
             lastVal1 = height;
             lastVal2 = height;
+            lastVal3 = height;
+            lastVal4 = height;
             yMax = startMax;
         }
 
@@ -171,6 +176,8 @@ public class GraphView implements SimulatorView {
             g.drawLine(width - 2, 0, width - 2, height);
             lastVal1 = height;
             lastVal2 = height;
+            lastVal3 = height;
+            lastVal4 = height;
             repaint();
         }
 
@@ -182,10 +189,14 @@ public class GraphView implements SimulatorView {
                 Iterator<Class> it = classes.iterator();
                 Class class1 = it.next();
                 Class class2 = it.next();
+                Class class3 = it.next();
+                Class class4 = it.next();
 
                 stats.reset();
                 int count1 = stats.getPopulationCount(field, class1);
                 int count2 = stats.getPopulationCount(field, class2);
+                int count3 = stats.getPopulationCount(field, class3);
+                int count4 = stats.getPopulationCount(field, class4);
 
                 Graphics g = graphImage.getGraphics();
 
@@ -218,6 +229,28 @@ public class GraphView implements SimulatorView {
                 g.setColor(colors.get(class2));
                 g.drawLine(width - 3, lastVal2, width - 2, y);
                 lastVal2 = y;
+
+                y = height - ((height * count3) / yMax) - 1;
+                while (y < 0) {
+                    scaleDown();
+                    y = height - ((height * count3) / yMax) - 1;
+                }
+                g.setColor(LIGHT_GRAY);
+                g.drawLine(width - 2, y, width - 2, height);
+                g.setColor(colors.get(class3));
+                g.drawLine(width - 3, lastVal3, width - 2, y);
+                lastVal3 = y;
+
+                y = height - ((height * count4) / yMax) - 1;
+                while (y < 0) {
+                    scaleDown();
+                    y = height - ((height * count4) / yMax) - 1;
+                }
+                g.setColor(LIGHT_GRAY);
+                g.drawLine(width - 2, y, width - 2, height);
+                g.setColor(colors.get(class4));
+                g.drawLine(width - 3, lastVal4, width - 2, y);
+                lastVal4 = y;
 
                 repaintNow();
 
@@ -278,9 +311,10 @@ public class GraphView implements SimulatorView {
         /**
          * Tell the layout manager how big we would like to be. (This method
          * gets called by layout managers for placing the components.)
-         * 
+         *
          * @return The preferred dimension for this component.
          */
+        @Override
         public Dimension getPreferredSize() {
             return new Dimension(graphImage.getWidth(), graphImage.getHeight());
         }
@@ -288,6 +322,7 @@ public class GraphView implements SimulatorView {
         /**
          * This component is opaque.
          */
+        @Override
         public boolean isOpaque() {
             return true;
         }
@@ -296,11 +331,12 @@ public class GraphView implements SimulatorView {
          * This component needs to be redisplayed. Copy the internal image to
          * screen. (This method gets called by the Swing screen painter every
          * time it wants this component displayed.)
-         * 
+         *
          * @param g
          *            The graphics context that can be used to draw on this
          *            component.
          */
+        @Override
         public void paintComponent(Graphics g) {
             // g.clearRect(0, 0, size.width, size.height);
             if (graphImage != null) {
