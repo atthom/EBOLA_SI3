@@ -44,7 +44,7 @@ public class Canard extends Animaux{
             if (this.getEtat().equals(EtatEtreVivant.CONTAGIEUX)) {
                 ArrayList<EtreVivant> cibles = this.ciblesPotentiellesAdjacentes(this.getPosition());
                 for (EtreVivant vivants : cibles) {
-                    if (vivants.getEtat().equals(EtatEtreVivant.SAINT)) {
+                    if (vivants.getEtat().equals(EtatEtreVivant.SAIN)) {
                         if (vivants.getClass().getSimpleName().equals("Poulet") || vivants.getClass().getSimpleName().equals("Humain") || vivants.getClass().getSimpleName().equals("Canard"))
                             this.infecte(vivants);
                     }

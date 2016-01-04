@@ -5,7 +5,7 @@ package modele.etresVivants;
  * Enum décrivant les états de l'individu
  */
 public enum EtatEtreVivant {
-    SAINT,
+    SAIN,
     MALADE,
     CONTAGIEUX,
     GUERI,

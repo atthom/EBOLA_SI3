@@ -136,20 +136,18 @@ public class Simulator {
     }
 
     public void simulate() {
-
         while(!checkAllState()){
             simulateOneStep();
             try {
-                TimeUnit.MILLISECONDS.sleep(1);
+                TimeUnit.MILLISECONDS.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-
     }
 
     public boolean checkAllState(){
-        return livingBeings.stream().noneMatch((vivants) -> (vivants.estVivant() && !vivants.getEtat().equals(EtatEtreVivant.SAINT)));
+        return livingBeings.stream().noneMatch((vivants) -> (vivants.estVivant() && !vivants.getEtat().equals(EtatEtreVivant.SAIN)));
     }
 
     /**
@@ -211,7 +209,7 @@ public class Simulator {
                     }else if(randome2.nextInt()%2==0) {
                         human = new Humain(EtatEtreVivant.MALADE, Virus.H5N1Humain.getTempsMalade(), location, field, Virus.H5N1Humain);
                     }else{
-                         human = new Humain(EtatEtreVivant.SAINT, 0, location, field, Virus.Rien);
+                         human = new Humain(EtatEtreVivant.SAIN, 0, location, field, Virus.Rien);
                     }
                     livingBeings.add(human);
                 }
@@ -221,7 +219,7 @@ public class Simulator {
                     if(randome2.nextInt()%2==0) {
                         duck = new Canard(EtatEtreVivant.MALADE,Virus.H5N1Canard.getTempsMalade(), location, field, Virus.H5N1Canard);
                     }else{
-                        duck = new Canard(EtatEtreVivant.SAINT, 0, location, field, Virus.Rien);
+                        duck = new Canard(EtatEtreVivant.SAIN, 0, location, field, Virus.Rien);
                     }
                     livingBeings.add(duck);
                 }
@@ -231,7 +229,7 @@ public class Simulator {
                     if(randome2.nextInt()%2==0) {
                         chicken = new Poulet(EtatEtreVivant.MALADE, Virus.H5N1Poulet.getTempsMalade(), location, field, Virus.H5N1Poulet);
                     }else{
-                        chicken = new Poulet(EtatEtreVivant.SAINT, 0, location, field, Virus.Rien);
+                        chicken = new Poulet(EtatEtreVivant.SAIN, 0, location, field, Virus.Rien);
                     }
                     livingBeings.add(chicken);
                 }
@@ -241,7 +239,7 @@ public class Simulator {
                     if(randome2.nextInt()%2==0) {
                         pig = new Cochon(EtatEtreVivant.MALADE, Virus.H1N1Cochon.getTempsMalade(), location, field, Virus.H1N1Cochon);
                     }else{
-                        pig = new Cochon(EtatEtreVivant.SAINT, 0, location, field, Virus.Rien);
+                        pig = new Cochon(EtatEtreVivant.SAIN, 0, location, field, Virus.Rien);
                     }
                     livingBeings.add(pig);
                 }

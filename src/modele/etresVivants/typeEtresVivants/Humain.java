@@ -46,7 +46,7 @@ public class Humain extends EtreVivant {
             if (this.getEtat().equals(EtatEtreVivant.CONTAGIEUX)) {
                 ArrayList<EtreVivant> cibles = this.ciblesPotentiellesAdjacentes(this.getPosition());
                 for (EtreVivant vivants : cibles) {
-                    if (vivants.getEtat().equals(EtatEtreVivant.SAINT)) {
+                    if (vivants.getEtat().equals(EtatEtreVivant.SAIN)) {
                         if (vivants.getClass().getSimpleName().equals("Humain"))
                             this.infecte(vivants);
                     }
@@ -62,7 +62,15 @@ public class Humain extends EtreVivant {
     @Override
     public void action() {
         if(this.estVivant()) {
-            bouge();
+            
+            if(this.etat.equals(EtatEtreVivant.MALADE)) {
+//                if (rand.nextFloat() <= this.getPeutBougerMalade()) {
+//                    bouge();
+//                }
+            } else {
+                bouge();
+            }
+            
             interagit();
         }
     }
@@ -115,7 +123,7 @@ public class Humain extends EtreVivant {
         if (this.etat.equals(EtatEtreVivant.GUERI)) {
             if (this.tempsRecup == 0) {
                 tempsRecup = 2;
-                this.etat = EtatEtreVivant.SAINT;
+                this.etat = EtatEtreVivant.SAIN;
                 this.virus = Virus.Rien;
             } else
                 this.tempsRecup--;

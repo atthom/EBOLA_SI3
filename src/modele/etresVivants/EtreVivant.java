@@ -28,7 +28,7 @@ public abstract class EtreVivant implements SeDeplacer{
      * Constructeur par defaut d'un etre vivant
      */
     public EtreVivant() {
-        this.etat = EtatEtreVivant.SAINT;
+        this.etat = EtatEtreVivant.SAIN;
         this.tempsEtat = 0;
         this.position = null;
         this.champ = null;
@@ -148,7 +148,7 @@ public abstract class EtreVivant implements SeDeplacer{
     @Override
     public void bouge() {
         Location newLocation = getChamp().freeAdjacentLocation(getPosition());
-        if(this.etat.equals(EtatEtreVivant.SAINT)){
+        if(this.etat.equals(EtatEtreVivant.SAIN)){
             if(rand.nextDouble() >= EtreVivant.peutBouger) {
                 if (newLocation != null) {
                     setLocation(newLocation);

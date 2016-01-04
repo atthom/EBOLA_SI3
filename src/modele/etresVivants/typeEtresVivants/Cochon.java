@@ -44,7 +44,7 @@ public class Cochon extends Animaux{
             if (this.getEtat().equals(EtatEtreVivant.CONTAGIEUX)) {
                 ArrayList<EtreVivant> cibles = this.ciblesPotentiellesAdjacentes(this.getPosition());
                 for (EtreVivant vivants : cibles) {
-                    if (vivants.getEtat().equals(EtatEtreVivant.SAINT)) {
+                    if (vivants.getEtat().equals(EtatEtreVivant.SAIN)) {
                         if (vivants.getClass().getSimpleName().equals("Cochon") || vivants.getClass().getSimpleName().equals("Humain"))
                             this.infecte(vivants);
                     }
