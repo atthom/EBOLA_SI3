@@ -29,8 +29,8 @@ public class Poulet extends Animaux {
         super();
     }
 
-    public Poulet(EtatEtreVivant healthLivingBeing, int healthTime, Location position, Field fields, Virus virus) {
-        super(healthLivingBeing, healthTime, position, fields, virus);
+    public Poulet(EtatEtreVivant healthLivingBeing, int healthTime, Location position, Field fields, Virus virus, int nombre) {
+        super(healthLivingBeing, healthTime, position, fields, virus,nombre);
     }
     /***
      * intéraction avec les cases adjacentes
@@ -40,7 +40,7 @@ public class Poulet extends Animaux {
 
         if(this.pourcentageSocial <= rand.nextDouble()) {
             if (this.getEtat().equals(EtatEtreVivant.CONTAGIEUX)) {
-                ArrayList<EtreVivant> cibles = this.ciblesPotentiellesAdjacentes(this.getPosition());
+                ArrayList<EtreVivant> cibles = this.ciblesPotentiellesAdjacentes(this.getPosition(),this.nombreVoisins);
                 for (EtreVivant vivants : cibles) {
                     if (vivants.getEtat().equals(EtatEtreVivant.SAIN)) {
                         if (vivants.getClass().getSimpleName().equals("Humain") || vivants.getClass().getSimpleName().equals("Poulet") || vivants.getClass().getSimpleName().equals("Canard"))
@@ -59,15 +59,15 @@ public class Poulet extends Animaux {
 
         if(living.getClass().getSimpleName().equals("Humain")){
 
-            if(Poulet.pourcentageContaminationHumain < rand.nextDouble())
+            if(this.pourcentageContaminationHumain < rand.nextDouble())
                 living.devientMalade(Virus.H5N1Humain);
         }
         else{
             if(living.getClass().getSimpleName().equals("Canard")){
-                if (Poulet.pourcentageContaminationCongenaires < rand.nextDouble())
+                if (this.pourcentageContaminationCongenaires < rand.nextDouble())
                     living.devientMalade(Virus.H5N1Canard);
             }else{
-                if(Poulet.pourcentageContaminationCongenaires < rand.nextDouble())
+                if(this.pourcentageContaminationCongenaires < rand.nextDouble())
                     living.devientMalade(Virus.H5N1Poulet);
             }
         }

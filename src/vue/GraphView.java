@@ -6,6 +6,7 @@ import javax.swing.*;
 
 import modele.carte.Field;
 import modele.carte.FieldStats;
+import modele.etresVivants.EtatEtreVivant;
 
 import java.util.*;
 
@@ -42,6 +43,8 @@ public class GraphView implements SimulatorView {
      *            The height of the plotter window (in pixles).
      * @param startMax
      *            The initial maximum value for the y axis.
+     * @param width
+     *            The second class to be plotted.
      */
     public GraphView(int width, int height, int startMax) {
         stats = new FieldStats();
@@ -65,7 +68,6 @@ public class GraphView implements SimulatorView {
      * @param color
      *            The color to be used for the given class.
      */
-    @Override
     public void setColor(Class animalClass, Color color) {
         colors.put(animalClass, color);
         classes = colors.keySet();
@@ -83,7 +85,6 @@ public class GraphView implements SimulatorView {
      * @param field
      *            The field whose status is to be displayed.
      */
-    @Override
     public void showStatus(int step, Field field) {
         graph.update(step, field, stats);
     }
@@ -91,10 +92,8 @@ public class GraphView implements SimulatorView {
     /**
      * Determine whether the simulation should continue to run.
      *
-     * @param field
      * @return true If there is more than one species alive.
      */
-    @Override
     public boolean isViable(Field field) {
         return stats.isViable(field);
     }
@@ -102,7 +101,6 @@ public class GraphView implements SimulatorView {
     /**
      * Prepare for a new run.
      */
-    @Override
     public void reset() {
         graph.newRun();
     }
@@ -314,7 +312,6 @@ public class GraphView implements SimulatorView {
          *
          * @return The preferred dimension for this component.
          */
-        @Override
         public Dimension getPreferredSize() {
             return new Dimension(graphImage.getWidth(), graphImage.getHeight());
         }
@@ -322,7 +319,6 @@ public class GraphView implements SimulatorView {
         /**
          * This component is opaque.
          */
-        @Override
         public boolean isOpaque() {
             return true;
         }
@@ -336,7 +332,6 @@ public class GraphView implements SimulatorView {
          *            The graphics context that can be used to draw on this
          *            component.
          */
-        @Override
         public void paintComponent(Graphics g) {
             // g.clearRect(0, 0, size.width, size.height);
             if (graphImage != null) {

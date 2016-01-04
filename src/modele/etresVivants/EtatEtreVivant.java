@@ -9,5 +9,6 @@ public enum EtatEtreVivant {
     MALADE,
     CONTAGIEUX,
     GUERI,
-    MORT;
+    MORT,
+    NULL;
 }

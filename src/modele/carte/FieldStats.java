@@ -29,11 +29,10 @@ public class FieldStats {
     /**
      * Get details of what is in the field.
      * 
-     * @param field
      * @return A string describing what is in the field.
      */
     public String getPopulationDetails(Field field) {
-        StringBuilder buffer = new StringBuilder();
+        StringBuffer buffer = new StringBuffer();
         if (!countsValid) {
             generateCounts(field);
         }
@@ -50,8 +49,6 @@ public class FieldStats {
     /**
      * Get the number of individuals in the population of a given class.
      * 
-     * @param field
-     * @param key
      * @return An int with the number for this class.
      */
     public int getPopulationCount(Field field, Class key) {
@@ -102,7 +99,6 @@ public class FieldStats {
      * Determine whether the simulation is still viable. I.e., should it
      * continue to run.
      * 
-     * @param field
      * @return true If there is more than one species alive.
      */
     public boolean isViable(Field field) {

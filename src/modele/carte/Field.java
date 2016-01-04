@@ -20,6 +20,10 @@ public class Field {
     // Storage for the animals.
     private Object[][] field;
 
+    public int getNeighbourhood() {
+        return neighbourhood;
+    }
+
     private int neighbourhood;
 
 
@@ -205,11 +209,41 @@ public class Field {
         return locations;
     }
 
-    /**
-     * Return the depth of the field.
-     * 
-     * @return The depth of the field.
-     */
+
+    public List<Location> crossLocation(Location location) {
+        assert location != null;
+
+        List<Location> locations = new LinkedList<>();
+
+        if (location != null) {
+            int row = location.getRow();
+            int col = location.getCol();
+
+            if (location.getRow() - 1 >= 0)
+                locations.add(new Location(row - 1, col));
+
+            if (location.getRow() + 1 < depth)
+                locations.add(new Location(row + 1, col));
+
+            if (location.getCol() - 1 >= 0)
+                locations.add(new Location(row, col - 1));
+
+            if (location.getCol() + 1 < width)
+                locations.add(new Location(row, col + 1));
+
+            // Shuffle the list. Several other methods rely on the list
+            // being in a random order.
+            Collections.shuffle(locations, rand);
+        }
+        return locations;
+    }
+
+
+        /**
+         * Return the depth of the field.
+         *
+         * @return The depth of the field.
+         */
     public int getDepth() {
         return depth;
     }
@@ -222,21 +256,5 @@ public class Field {
     public int getWidth() {
         return width;
     }
-/*
-    public boolean EstDansChamp(int row, int col){
 
-        return col < width && row < depth && col>=0 && row >=0;
-
-    }
-
-    public ArrayList<EtreVivant> methodeEtoile(Location positionDonnee) {
-        ArrayList<EtreVivant> res = new ArrayList<>();
-
-        if(this.EstDansChamp(positionDonnee.getRow()-1,positionDonnee.getCol()) && )
-            res.add((EtreVivant)getObjectAt(new Location(positionDonnee.getRow()-1,positionDonnee.getCol())));
-
-    }
-
-    public ArrayList<EtreVivant> methodeCarree(Location positionDonnee) {
-    }*/
 }

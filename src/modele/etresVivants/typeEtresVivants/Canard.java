@@ -30,8 +30,8 @@ public class Canard extends Animaux{
         super();
     }
 
-    public Canard(EtatEtreVivant healthLivingBeing, int healthTime, Location position, Field fields, Virus virus) {
-        super(healthLivingBeing, healthTime, position, fields, virus);
+    public Canard(EtatEtreVivant healthLivingBeing, int healthTime, Location position, Field fields, Virus virus,int nombre) {
+        super(healthLivingBeing, healthTime, position, fields, virus,nombre);
     }
 
     /***
@@ -42,7 +42,7 @@ public class Canard extends Animaux{
        // Random rand = Randomizer.getRandom();
         if(this.pourcentageSocial <= rand.nextDouble()) {
             if (this.getEtat().equals(EtatEtreVivant.CONTAGIEUX)) {
-                ArrayList<EtreVivant> cibles = this.ciblesPotentiellesAdjacentes(this.getPosition());
+                ArrayList<EtreVivant> cibles = this.ciblesPotentiellesAdjacentes(this.getPosition(),this.nombreVoisins);
                 for (EtreVivant vivants : cibles) {
                     if (vivants.getEtat().equals(EtatEtreVivant.SAIN)) {
                         if (vivants.getClass().getSimpleName().equals("Poulet") || vivants.getClass().getSimpleName().equals("Humain") || vivants.getClass().getSimpleName().equals("Canard"))
@@ -61,15 +61,15 @@ public class Canard extends Animaux{
     public void infecte(EtreVivant living){
         //Random random = Randomizer.getRandom();
         if(living.getClass().getSimpleName().equals("Humain")){
-            if(Canard.pourcentageContaminationHumain < rand.nextDouble())
+            if(this.pourcentageContaminationHumain < rand.nextDouble())
                 living.devientMalade(Virus.H5N1Humain);
         }
         else{
             if(living.getClass().getSimpleName().equals("Poulet")){
-                if (Canard. pourcentageContaminationCongenaires < rand.nextDouble())
+                if (this. pourcentageContaminationCongenaires < rand.nextDouble())
                     living.devientMalade(Virus.H5N1Poulet);
             }else{
-                if(Canard.pourcentageContaminationCongenaires < rand.nextDouble())
+                if(this.pourcentageContaminationCongenaires < rand.nextDouble())
                     living.devientMalade(Virus.H5N1Canard);
             }
         }

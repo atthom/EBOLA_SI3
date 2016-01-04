@@ -5,11 +5,12 @@ package modele.Virus;
  */
 public enum Virus {
 
-    H5N1Humain("H5N1",10,20,0.012),  H1N1Humain("H1N1",10,20,0.012),
-    H5N1Canard("H5N1",10,20,0.018),
-    H5N1Poulet("H5N1",10,20,0.02),
-                                       H1N1Cochon("H1N1",10,20,0.018),
+    H5N1Humain("H5N1",10,7,0.012),  H1N1Humain("H1N1",10,7,0.012),
+    H5N1Canard("H5N1",10,5,0.018),
+    H5N1Poulet("H5N1",10,5,0.02),
+                                       H1N1Cochon("H1N1",10,5,0.018),
     Rien("Ok",0,0,0);
+
 
 
 

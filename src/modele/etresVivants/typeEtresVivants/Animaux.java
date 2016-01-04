@@ -3,9 +3,11 @@ package modele.etresVivants.typeEtresVivants;
 import modele.Virus.Virus;
 import modele.carte.Field;
 import modele.carte.Location;
+import modele.carte.Randomizer;
 import modele.etresVivants.EtatEtreVivant;
 import modele.etresVivants.EtreVivant;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -20,8 +22,8 @@ public abstract class Animaux extends EtreVivant {
         super();
     }
 
-    public Animaux(EtatEtreVivant healthLivingBeing, int healthTime, Location position, Field fields,  Virus virus) {
-        super(healthLivingBeing, healthTime, position, fields,  virus);
+    public Animaux(EtatEtreVivant healthLivingBeing, int healthTime, Location position, Field fields,  Virus virus, int nombreVois) {
+        super(healthLivingBeing, healthTime, position, fields,  virus,nombreVois);
     }
 
     /***
@@ -30,7 +32,6 @@ public abstract class Animaux extends EtreVivant {
     @Override
     public void action() {
         if(estVivant()) {
-            bouge();
             interagit();
             verifieEtat();
         }

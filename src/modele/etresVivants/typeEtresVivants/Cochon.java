@@ -30,8 +30,8 @@ public class Cochon extends Animaux{
         super();
     }
 
-    public Cochon(EtatEtreVivant healthLivingBeing, int healthTime, Location position, Field fields, Virus virus) {
-        super(healthLivingBeing, healthTime, position, fields, virus);
+    public Cochon(EtatEtreVivant healthLivingBeing, int healthTime, Location position, Field fields, Virus virus,int nombreVois) {
+        super(healthLivingBeing, healthTime, position, fields, virus, nombreVois);
     }
 
     /***
@@ -42,7 +42,7 @@ public class Cochon extends Animaux{
 
         if(this.pourcentageSocial <= rand.nextDouble()) {
             if (this.getEtat().equals(EtatEtreVivant.CONTAGIEUX)) {
-                ArrayList<EtreVivant> cibles = this.ciblesPotentiellesAdjacentes(this.getPosition());
+                ArrayList<EtreVivant> cibles = this.ciblesPotentiellesAdjacentes(this.getPosition(),this.nombreVoisins);
                 for (EtreVivant vivants : cibles) {
                     if (vivants.getEtat().equals(EtatEtreVivant.SAIN)) {
                         if (vivants.getClass().getSimpleName().equals("Cochon") || vivants.getClass().getSimpleName().equals("Humain"))
@@ -61,11 +61,11 @@ public class Cochon extends Animaux{
     public void infecte(EtreVivant living){
 
         if(living.getClass().getSimpleName().equals("Humain")){
-            if(Cochon.pourcentageContaminationHumain < rand.nextDouble())
+            if(this.pourcentageContaminationHumain < rand.nextDouble())
                 living.devientMalade(Virus.H1N1Humain);
         }
         else{
-            if(Cochon.pourcentageContaminationCongenaires < rand.nextDouble())
+            if(this.pourcentageContaminationCongenaires < rand.nextDouble())
                 living.devientMalade(Virus.H1N1Cochon);
         }
     }

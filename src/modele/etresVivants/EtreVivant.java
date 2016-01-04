@@ -5,24 +5,20 @@ import modele.carte.Field;
 import modele.carte.Location;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import modele.carte.Randomizer;
-import modele.etresVivants.typeEtresVivants.SeDeplacer;
 
 
 /**
  * Created by Adrien Prestini on 18/12/2015.
  */
-public abstract class EtreVivant implements SeDeplacer{
+public abstract class EtreVivant{
 
     protected EtatEtreVivant etat;
-    protected static final double peutBouger = 0.8;
-    protected static final double peutBougerMalade = 0.3;
     protected int tempsEtat;
     protected Location position;
     protected Field champ;
     protected Virus virus;
-    protected static final Random rand = Randomizer.getRandom();
+    protected int nombreVoisins;
+
 
     /**
      * Constructeur par defaut d'un etre vivant
@@ -43,12 +39,13 @@ public abstract class EtreVivant implements SeDeplacer{
      * @param fields
      * @param virus
      */
-    public EtreVivant(EtatEtreVivant healthLivingBeing, int healthTime, Location position, Field fields,  Virus virus) {
+    public EtreVivant(EtatEtreVivant healthLivingBeing, int healthTime, Location position, Field fields,  Virus virus, int nombreVoisins) {
         this.champ = fields;
         this.etat = healthLivingBeing;
         this.tempsEtat = healthTime;
         setPosition(position);
         this.virus = virus;
+        this.nombreVoisins = nombreVoisins;
     }
 
     /**
@@ -86,7 +83,7 @@ public abstract class EtreVivant implements SeDeplacer{
     /***
      * L'etre vivant meurt et disparait de la grille graphique
      */
-    protected void meurt(){
+    public void meurt(){
         this.tempsEtat--;
         etat = EtatEtreVivant.MORT;
         if (position != null) {
@@ -102,8 +99,16 @@ public abstract class EtreVivant implements SeDeplacer{
      * @param positionDonnee
      * @return une liste d'etre vivants adjacents et victimes potentielles
      */
-    public ArrayList<EtreVivant> ciblesPotentiellesAdjacentes(Location positionDonnee/*,int option4ou8*/){
-        List<Location> positionCibles = champ.adjacentLocations(positionDonnee);
+    public ArrayList<EtreVivant> ciblesPotentiellesAdjacentes(Location positionDonnee,int option4ou8){
+        List<Location> positionCibles;
+        if(option4ou8 == 4) {
+            positionCibles = champ.crossLocation(positionDonnee);
+
+        }else {
+
+            positionCibles = champ.adjacentLocations(positionDonnee);
+        }
+
         ArrayList<EtreVivant> res = new ArrayList<>();
         for(Location o : positionCibles){
             if(champ.getObjectAt(o) != null)
@@ -141,47 +146,8 @@ public abstract class EtreVivant implements SeDeplacer{
     public boolean estVivant(){
         return !this.getEtat().equals(EtatEtreVivant.MORT);
     }
-    
-    /***
-     * Méthode permettant le déplacement de l'Homme
-     */
-    @Override
-    public void bouge() {
-        Location newLocation = getChamp().freeAdjacentLocation(getPosition());
-        if(this.etat.equals(EtatEtreVivant.SAIN)){
-            if(rand.nextDouble() >= EtreVivant.peutBouger) {
-                if (newLocation != null) {
-                    setLocation(newLocation);
-                }
-            }
-        }else {
-            if (rand.nextDouble() >= EtreVivant.peutBougerMalade) {
-                if (newLocation != null) {
-                    setLocation(newLocation);
-                }
-            }
-        }
-    }
-    
-     public double getPeutBouger() {
-        return peutBouger;
-    }
-    
-    public double getPeutBougerMalade() {
-        return peutBougerMalade;
-    }
 
-    /***
-     * Changement de position sur la grille graphique
-     * @param newLocation
-     */
-    @Override
-    public void setLocation(Location newLocation) {
-        if (this.position != null) {
-            this.champ.clear(getPosition());
-        }
-        this.position = newLocation;
-        this.champ.place(this, newLocation);
-    }
+    public void setVirus(Virus v){this.virus = virus;}
 
+    public void changeEtat(EtatEtreVivant etat){this.etat = etat;}
 }

@@ -23,9 +23,7 @@ public class Location extends Point
     
     /**
      * Implement content equality.
-     * @return 
      */
-    @Override
     public boolean equals(Object obj)
     {
         if(obj instanceof Location) {
@@ -41,7 +39,6 @@ public class Location extends Point
      * Return a string of the form row,column
      * @return A string representation of the location.
      */
-    @Override
     public String toString()
     {
         return x + "," + y;
@@ -53,7 +50,6 @@ public class Location extends Point
      * unique hash code for each (row, col) pair.
      * @return A hashcode for the location.
      */
-    @Override
     public int hashCode()
     {
         return (x << 16) + y;

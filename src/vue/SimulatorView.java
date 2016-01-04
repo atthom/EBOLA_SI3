@@ -1,6 +1,7 @@
 package vue;
 
 import modele.carte.Field;
+import modele.etresVivants.EtatEtreVivant;
 
 import java.awt.Color;
 
@@ -25,7 +26,6 @@ public interface SimulatorView {
     /**
      * Determine whether the simulation should continue to run.
      * 
-     * @param field
      * @return true If there is more than one species alive.
      */
     boolean isViable(Field field);

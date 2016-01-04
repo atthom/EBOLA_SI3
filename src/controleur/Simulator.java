@@ -4,7 +4,8 @@ import java.util.Random;
 
 import modele.etresVivants.EtatEtreVivant;
 import modele.etresVivants.EtreVivant;
-import modele.etresVivants.typeEtresVivants.Animaux;
+import modele.etresVivants.Variantes.Le_Medecin;
+import modele.etresVivants.Variantes.Prince_De_La_Mort;
 import modele.etresVivants.typeEtresVivants.Poulet;
 import modele.etresVivants.typeEtresVivants.Canard;
 import modele.etresVivants.typeEtresVivants.Humain;
@@ -29,14 +30,13 @@ import java.util.concurrent.TimeUnit;
  * @author David J. Barnes and Michael Kölling
  * @version 2011.07.31
  */
-public class Simulator {
+public class Simulator implements Runnable {
     // Constants representing configuration information for the simulation.
     // The default width for the grid.
     private static final int DEFAULT_WIDTH = 120;
     // The default depth of the grid.
     private static final int DEFAULT_DEPTH = 80;
 
-    private static final int DEFAULT_NEIGHBOURHOOD = 4;
 
     // The probability that a fox will be created in any given grid position.
     private static final double PIG_CREATION_PROBABILITY = 0.06;
@@ -56,16 +56,25 @@ public class Simulator {
     // A graphical view of the simulation.
     private List<SimulatorView> views;
 
+    private int vitesse ;
+    private boolean princePresent;
+    private boolean medic;
     /**
      * Construct a simulation field with default size.
      */
-    public Simulator() {
+    /*public Simulator() {
         this(DEFAULT_DEPTH, DEFAULT_WIDTH,DEFAULT_NEIGHBOURHOOD);
     }
 
     public Simulator(int neighbourhood){
 
         this(DEFAULT_DEPTH,DEFAULT_WIDTH,neighbourhood);
+
+    }*/
+    public Simulator(int neighbourhood, int vitesseJeu ,boolean princeMort, boolean medic){
+
+        this(DEFAULT_DEPTH,DEFAULT_WIDTH,neighbourhood,vitesseJeu,princeMort,medic);
+
 
     }
 
@@ -77,13 +86,16 @@ public class Simulator {
      * @param width
      *            Width of the field. Must be greater than zero.
      */
-    public Simulator(int depth, int width, int neighbourhood) {
+    public Simulator(int depth, int width, int neighbourhood, int vitesseJeu ,boolean princeMort, boolean medic) {
         if (width <= 0 || depth <= 0) {
             System.out.println("The dimensions must be greater than zero.");
             System.out.println("Using default values.");
             depth = DEFAULT_DEPTH;
             width = DEFAULT_WIDTH;
         }
+        this.vitesse = vitesseJeu;
+        princePresent = princeMort;
+        this.medic = medic;
 
         livingBeings = new ArrayList<>();
 
@@ -96,6 +108,8 @@ public class Simulator {
         view.setColor(Cochon.class, Color.PINK);
         view.setColor(Canard.class, Color.YELLOW);
         view.setColor(Poulet.class, Color.RED);
+        view.setColor(Prince_De_La_Mort.class, Color.cyan);
+        view.setColor(Le_Medecin.class, Color.magenta);
         views.add(view);
 
         view = new GraphView(500, 150, 500);
@@ -136,18 +150,26 @@ public class Simulator {
     }
 
     public void simulate() {
+
         while(!checkAllState()){
             simulateOneStep();
             try {
-                TimeUnit.MILLISECONDS.sleep(10);
+                TimeUnit.MILLISECONDS.sleep(vitesse);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+
     }
 
     public boolean checkAllState(){
-        return livingBeings.stream().noneMatch((vivants) -> (vivants.estVivant() && !vivants.getEtat().equals(EtatEtreVivant.SAIN)));
+
+        for (EtreVivant vivants : livingBeings){
+            if(vivants.estVivant() && !vivants.getEtat().equals(EtatEtreVivant.SAIN))
+                return false;
+        }
+
+        return true;
     }
 
     /**
@@ -174,9 +196,9 @@ public class Simulator {
     public void reset() {
         step = 0;
         livingBeings.clear();
-        views.stream().forEach((view) -> {
+        for (SimulatorView view : views) {
             view.reset();
-        });
+        }
 
         populate();
         updateViews();
@@ -186,30 +208,34 @@ public class Simulator {
      * Update all existing views.
      */
     private void updateViews() {
-        views.stream().forEach((view) -> {
+        for (SimulatorView view : views) {
             view.showStatus(step, field);
-        });
+        }
     }
 
     /**
      * Randomly populate the field with foxes and rabbits.
      */
     private void populate() {
-        Random randome2;
-        Random r = new Random();
-        randome2 = r;
+        Random randome2 = Randomizer.getRandom();
         field.clear();
         for (int row = 0; row < field.getDepth(); row++) {
             for (int col = 0; col < field.getWidth(); col++) {
+                if(this.princePresent){
+                    Location location = new Location(row, col);
+                    Prince_De_La_Mort prince = new Prince_De_La_Mort(EtatEtreVivant.SAIN, 0, location, field, Virus.Rien,this.field.getNeighbourhood());
+                    livingBeings.add(prince);
+                    princePresent = false;
+                }
                 if (randome2.nextDouble() <= HUMAN_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
                     Humain human;
                     if(randome2.nextInt()%3==0) {
-                        human = new Humain(EtatEtreVivant.MALADE, Virus.H1N1Humain.getTempsMalade(), location, field, Virus.H1N1Humain);
+                        human = new Humain(EtatEtreVivant.MALADE, Virus.H1N1Humain.getTempsMalade(), location, field, Virus.H1N1Humain,this.field.getNeighbourhood());
                     }else if(randome2.nextInt()%2==0) {
-                        human = new Humain(EtatEtreVivant.MALADE, Virus.H5N1Humain.getTempsMalade(), location, field, Virus.H5N1Humain);
+                        human = new Humain(EtatEtreVivant.MALADE, Virus.H5N1Humain.getTempsMalade(), location, field, Virus.H5N1Humain,this.field.getNeighbourhood());
                     }else{
-                         human = new Humain(EtatEtreVivant.SAIN, 0, location, field, Virus.Rien);
+                         human = new Humain(EtatEtreVivant.SAIN, 0, location, field, Virus.Rien,this.field.getNeighbourhood());
                     }
                     livingBeings.add(human);
                 }
@@ -217,9 +243,9 @@ public class Simulator {
                     Location location = new Location(row, col);
                     Canard duck;
                     if(randome2.nextInt()%2==0) {
-                        duck = new Canard(EtatEtreVivant.MALADE,Virus.H5N1Canard.getTempsMalade(), location, field, Virus.H5N1Canard);
+                        duck = new Canard(EtatEtreVivant.MALADE,Virus.H5N1Canard.getTempsMalade(), location, field, Virus.H5N1Canard,this.field.getNeighbourhood());
                     }else{
-                        duck = new Canard(EtatEtreVivant.SAIN, 0, location, field, Virus.Rien);
+                        duck = new Canard(EtatEtreVivant.SAIN, 0, location, field, Virus.Rien,this.field.getNeighbourhood());
                     }
                     livingBeings.add(duck);
                 }
@@ -227,9 +253,9 @@ public class Simulator {
                     Location location = new Location(row, col);
                     Poulet chicken;
                     if(randome2.nextInt()%2==0) {
-                        chicken = new Poulet(EtatEtreVivant.MALADE, Virus.H5N1Poulet.getTempsMalade(), location, field, Virus.H5N1Poulet);
+                        chicken = new Poulet(EtatEtreVivant.MALADE, Virus.H5N1Poulet.getTempsMalade(), location, field, Virus.H5N1Poulet,this.field.getNeighbourhood());
                     }else{
-                        chicken = new Poulet(EtatEtreVivant.SAIN, 0, location, field, Virus.Rien);
+                        chicken = new Poulet(EtatEtreVivant.SAIN, 0, location, field, Virus.Rien,this.field.getNeighbourhood());
                     }
                     livingBeings.add(chicken);
                 }
@@ -237,15 +263,27 @@ public class Simulator {
                     Location location = new Location(row, col);
                     Cochon pig;
                     if(randome2.nextInt()%2==0) {
-                        pig = new Cochon(EtatEtreVivant.MALADE, Virus.H1N1Cochon.getTempsMalade(), location, field, Virus.H1N1Cochon);
+                        pig = new Cochon(EtatEtreVivant.MALADE, Virus.H1N1Cochon.getTempsMalade(), location, field, Virus.H1N1Cochon,this.field.getNeighbourhood());
                     }else{
-                        pig = new Cochon(EtatEtreVivant.SAIN, 0, location, field, Virus.Rien);
+                        pig = new Cochon(EtatEtreVivant.SAIN, 0, location, field, Virus.Rien,this.field.getNeighbourhood());
                     }
                     livingBeings.add(pig);
                 }
                 // else leave the location empty.
-
+                if(row == field.getDepth()-2 && col == field.getWidth()-2){
+                    if(this.medic){
+                        Location location = new Location(row, col);
+                        Le_Medecin med = new Le_Medecin(EtatEtreVivant.SAIN, 0, location, field, Virus.Rien,this.field.getNeighbourhood());
+                        livingBeings.add(med);
+                        medic = false;
+                    }
+                }
             }
         }
+    }
+
+    @Override
+    public void run() {
+        simulate();
     }
 }

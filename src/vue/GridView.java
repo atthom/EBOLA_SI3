@@ -4,6 +4,9 @@ import java.awt.*;
 import javax.swing.*;
 import modele.carte.Field;
 import modele.carte.FieldStats;
+import modele.etresVivants.EtatEtreVivant;
+import modele.etresVivants.EtreVivant;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,7 +71,6 @@ public class GridView extends JFrame implements SimulatorView {
      * @param color
      *            The color to be used for the given class.
      */
-    @Override
     public void setColor(Class animalClass, Color color) {
         colors.put(animalClass, color);
     }
@@ -94,7 +96,6 @@ public class GridView extends JFrame implements SimulatorView {
      * @param field
      *            The field whose status is to be displayed.
      */
-    @Override
     public void showStatus(int step, Field field) {
         if (!isVisible()) {
             setVisible(true);
@@ -107,12 +108,12 @@ public class GridView extends JFrame implements SimulatorView {
 
         for (int row = 0; row < field.getDepth(); row++) {
             for (int col = 0; col < field.getWidth(); col++) {
-                Object animal = field.getObjectAt(row, col);
-                if (animal != null) {
-                    stats.incrementCount(animal.getClass());
-                    fieldView.drawMark(col, row, getColor(animal.getClass()));
+                EtreVivant specie = (EtreVivant) field.getObjectAt(row, col);
+                if (specie != null) {
+                    stats.incrementCount(specie.getClass());
+                    fieldView.drawMark(col, row, getColor(specie.getClass()),specie.getEtat());
                 } else {
-                    fieldView.drawMark(col, row, EMPTY_COLOR);
+                    fieldView.drawMark(col, row, EMPTY_COLOR, EtatEtreVivant.NULL);
                 }
             }
         }
@@ -128,7 +129,6 @@ public class GridView extends JFrame implements SimulatorView {
      *
      * @return true If there is more than one species alive.
      */
-    @Override
     public boolean isViable(Field field) {
         return stats.isViable(field);
     }
@@ -136,7 +136,6 @@ public class GridView extends JFrame implements SimulatorView {
     /**
      * Prepare for a new run.
      */
-    @Override
     public void reset() {
     }
 
@@ -167,7 +166,6 @@ public class GridView extends JFrame implements SimulatorView {
         /**
          * Tell the GUI manager how big we would like to be.
          */
-        @Override
         public Dimension getPreferredSize() {
             return new Dimension(gridWidth * GRID_VIEW_SCALING_FACTOR,
                     gridHeight * GRID_VIEW_SCALING_FACTOR);
@@ -197,16 +195,29 @@ public class GridView extends JFrame implements SimulatorView {
         /**
          * Paint on grid location on this field in a given color.
          */
-        public void drawMark(int x, int y, Color color) {
-            g.setColor(color);
-            g.fillRect(x * xScale, y * yScale, xScale - 1, yScale - 1);
-        }
+        public void drawMark(int x, int y, Color color, EtatEtreVivant state) {
 
+           if(state == null) return;
+            g.setColor(color);
+            if(state.equals(EtatEtreVivant.SAIN))
+                g.setColor(color);
+            else if(state.equals(EtatEtreVivant.MALADE))
+                g.setColor(color.darker().darker());
+            else if(state.equals(EtatEtreVivant.CONTAGIEUX))
+                g.setColor(color.darker());
+            else if(state.equals(EtatEtreVivant.GUERI))
+                g.setColor(color.brighter().brighter());
+            else if(state.equals(EtatEtreVivant.MORT))
+                g.setColor(Color.black);
+
+
+            g.fillRect(x * xScale, y * yScale, xScale - 1, yScale - 1);
+
+        }
         /**
          * The field view component needs to be redisplayed. Copy the internal
          * image to screen.
          */
-        @Override
         public void paintComponent(Graphics g) {
             if (fieldImage != null) {
                 Dimension currentSize = getSize();
