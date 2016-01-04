@@ -140,7 +140,7 @@ public class Simulator {
         while(!checkAllState()){
             simulateOneStep();
             try {
-                TimeUnit.MILLISECONDS.sleep(0);
+                TimeUnit.MILLISECONDS.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -149,13 +149,7 @@ public class Simulator {
     }
 
     public boolean checkAllState(){
-
-        for (EtreVivant vivants : livingBeings){
-            if(vivants.estVivant() && !vivants.getEtat().equals(EtatEtreVivant.SAINT))
-                return false;
-        }
-
-        return true;
+        return livingBeings.stream().noneMatch((vivants) -> (vivants.estVivant() && !vivants.getEtat().equals(EtatEtreVivant.SAINT)));
     }
 
     /**
@@ -182,9 +176,9 @@ public class Simulator {
     public void reset() {
         step = 0;
         livingBeings.clear();
-        for (SimulatorView view : views) {
+        views.stream().forEach((view) -> {
             view.reset();
-        }
+        });
 
         populate();
         updateViews();
@@ -194,9 +188,9 @@ public class Simulator {
      * Update all existing views.
      */
     private void updateViews() {
-        for (SimulatorView view : views) {
+        views.stream().forEach((view) -> {
             view.showStatus(step, field);
-        }
+        });
     }
 
     /**

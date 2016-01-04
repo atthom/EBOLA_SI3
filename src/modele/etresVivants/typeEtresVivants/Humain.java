@@ -14,14 +14,13 @@ import java.util.Random;
  */
 
 //l'homme ne peut que s'infecter entre congénaires et non avec des animaux
-public class Humain extends EtreVivant implements SeDeplacer{
+public class Humain extends EtreVivant {
 
-    private static final double peutBouger = 0.8;
-    private static final double peutBougerMalade = 0.3;
+
     private static final double pourcentageContaminationHumain = 0.4;
     private int tempsRecup = 2;
     private static final double pourcentageSocial = 0.2;
-    private static final Random rand = Randomizer.getRandom();
+  
 
     public Humain(){
         super();
@@ -90,44 +89,10 @@ public class Humain extends EtreVivant implements SeDeplacer{
         }
     }
 
-    /***
-     * Méthode permettant le déplacement de l'Homme
-     */
-    @Override
-    public void bouge() {
-        Location newLocation = getChamp().freeAdjacentLocation(getPosition());
-        if(this.etat.equals(EtatEtreVivant.SAINT)){
-            if(rand.nextDouble() >= Humain.peutBouger) {
-                if (newLocation != null) {
-                    setLocation(newLocation);
-                }
-            }
-        }else {
-            if (rand.nextDouble() >= Humain.peutBougerMalade) {
-                if (newLocation != null) {
-                    setLocation(newLocation);
-                }
-            }
-        }
-    }
-
-    /***
-     * Changement de position sur la grille graphique
-     * @param newLocation
-     */
-    @Override
-    public void setLocation(Location newLocation) {
-        if (this.position != null) {
-            this.champ.clear(getPosition());
-        }
-        this.position = newLocation;
-        this.champ.place(this, newLocation);
-    }
+    
 
 
-    public double getPeutBouger() {
-        return peutBouger;
-    }
+   
 
     public double getPourcentageContaminationHumain() {
         return pourcentageContaminationHumain;
@@ -141,9 +106,7 @@ public class Humain extends EtreVivant implements SeDeplacer{
         return tempsRecup;
     }
 
-    public double getPeutBougerMalade() {
-        return peutBougerMalade;
-    }
+    
 
     /***
      * L'Homme est le seul EtreVivant à pouvoir guerrir de son infection

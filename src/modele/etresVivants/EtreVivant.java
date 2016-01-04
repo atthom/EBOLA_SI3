@@ -5,18 +5,24 @@ import modele.carte.Field;
 import modele.carte.Location;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import modele.carte.Randomizer;
+import modele.etresVivants.typeEtresVivants.SeDeplacer;
 
 
 /**
  * Created by Adrien Prestini on 18/12/2015.
  */
-public abstract class EtreVivant{
+public abstract class EtreVivant implements SeDeplacer{
 
     protected EtatEtreVivant etat;
+    protected static final double peutBouger = 0.8;
+    protected static final double peutBougerMalade = 0.3;
     protected int tempsEtat;
     protected Location position;
     protected Field champ;
     protected Virus virus;
+    protected static final Random rand = Randomizer.getRandom();
 
     /**
      * Constructeur par defaut d'un etre vivant
@@ -134,6 +140,48 @@ public abstract class EtreVivant{
 
     public boolean estVivant(){
         return !this.getEtat().equals(EtatEtreVivant.MORT);
+    }
+    
+    /***
+     * Méthode permettant le déplacement de l'Homme
+     */
+    @Override
+    public void bouge() {
+        Location newLocation = getChamp().freeAdjacentLocation(getPosition());
+        if(this.etat.equals(EtatEtreVivant.SAINT)){
+            if(rand.nextDouble() >= EtreVivant.peutBouger) {
+                if (newLocation != null) {
+                    setLocation(newLocation);
+                }
+            }
+        }else {
+            if (rand.nextDouble() >= EtreVivant.peutBougerMalade) {
+                if (newLocation != null) {
+                    setLocation(newLocation);
+                }
+            }
+        }
+    }
+    
+     public double getPeutBouger() {
+        return peutBouger;
+    }
+    
+    public double getPeutBougerMalade() {
+        return peutBougerMalade;
+    }
+
+    /***
+     * Changement de position sur la grille graphique
+     * @param newLocation
+     */
+    @Override
+    public void setLocation(Location newLocation) {
+        if (this.position != null) {
+            this.champ.clear(getPosition());
+        }
+        this.position = newLocation;
+        this.champ.place(this, newLocation);
     }
 
 }

@@ -30,6 +30,7 @@ public abstract class Animaux extends EtreVivant {
     @Override
     public void action() {
         if(estVivant()) {
+            bouge();
             interagit();
             verifieEtat();
         }
